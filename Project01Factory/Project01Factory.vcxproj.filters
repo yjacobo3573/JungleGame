@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Xml Include="Assets\Object.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\Engine.cpp" />
+    <ClCompile Include="Source\Input.cpp" />
+    <ClCompile Include="Source\Component.cpp" />
+    <ClCompile Include="Source\GameObject.cpp" />
+    <ClCompile Include="Source\Textures.cpp" />
+    <ClCompile Include="Source\SpriteComponent.cpp" />
+    <ClCompile Include="Source\ComponentFactory.cpp" />
+    <ClCompile Include="Source\BodyComponent.cpp" />
+    <ClCompile Include="Source\ControllerComponent.cpp" />
+    <ClCompile Include="Source\SuperSpeedComponent.cpp" />
+    <ClCompile Include="Source\JumpComponent.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Engine.h" />
+    <ClInclude Include="Source\Input.h" />
+    <ClInclude Include="Source\Component.h" />
+    <ClInclude Include="Source\GameObject.h" />
+    <ClInclude Include="Source\Textures.h" />
+    <ClInclude Include="Source\SpriteComponent.h" />
+    <ClInclude Include="Source\ComponentFactory.h" />
+    <ClInclude Include="Source\BodyComponent.h" />
+    <ClInclude Include="Source\ControllerComponent.h" />
+    <ClInclude Include="Source\SuperSpeedComponent.h" />
+    <ClInclude Include="Source\JumpComponent.h" />
+  </ItemGroup>
+</Project>

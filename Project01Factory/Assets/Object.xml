@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LEVEL1>
+	<Object type="Player">
+		<BodyComponent x="0" y="200" width="160" height="160" velocityX="1" 
+			  velocityY="14" angle="0"/>
+		<SpriteComponent textureKey="Player" />
+		<ControllerComponent />
+		<SuperSpeedComponent />
+		<JumpComponent />
+	</Object>
+
+	<Object type="Enemy">
+		<BodyComponent x="300" y="300" width="64" height="64" velocityX="0"
+			  velocityY="0" angle="0"/>
+		<SpriteComponent textureKey="Enemy" />
+	</Object>
+	
+</LEVEL1>

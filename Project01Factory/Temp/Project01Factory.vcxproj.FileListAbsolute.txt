@@ -1,0 +1,6 @@
+C:\Users\yjaco\source\repos\Project01Factory\Project01Factory\Game\SDL2d.dll
+C:\Users\yjaco\source\repos\Project01Factory\Project01Factory\Game\SDL2_imaged.dll
+C:\Users\yjaco\source\repos\Project01Factory\Project01Factory\Game\libpng16d.dll
+C:\Users\yjaco\source\repos\Project01Factory\Project01Factory\Game\zlibd1.dll
+C:\Users\yjaco\source\repos\Project01Factory\Project01Factory\Game\tinyxml2.dll
+C:\Users\yjaco\source\repos\Project01Factory\Project01Factory\Temp\Project0.4E10D0D1.Up2Date
