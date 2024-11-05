@@ -49,7 +49,7 @@ int Engine::loadLevel()
     
     // Load textures into the texture manager
     Textures::load("Player", "Assets/Run (7).png", renderer);
-    Textures::load("Enemy", "Assets/JungleBackground.png", renderer);
+    Textures::load("Enemy", "Assets/treeLog.png", renderer);
 
     if (!Textures::load("Player", "Assets/Run (7).png", renderer)) {
         SDL_Log("Texture failed to load");
@@ -111,17 +111,7 @@ for (const tinyxml2::XMLElement* objectElem = root->FirstChildElement("Object");
         }
     }
 }
-//auto bodyComponent = std::make_unique<BodyComponent>(player, 2,3,4,5,6,7,8);
-//player->add(std::move(bodyComponent));
-//
-//// Test retrieval
-//auto retrievedBody = player->get<BodyComponent>();
-//if (retrievedBody) {
-//    std::cout << "BodyComponent successfully retrieved!" << std::endl;
-//}
-//else {
-//    std::cerr << "Failed to retrieve BodyComponent." << std::endl;
-//}
+
 
 
 //Add game objects to the engine

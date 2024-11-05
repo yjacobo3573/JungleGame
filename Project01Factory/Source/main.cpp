@@ -1,9 +1,15 @@
 #define SDL_MAIN_HANDLED
+
 #include <SDL2/SDL.h>
+
 #include <SDL2/SDL_image.h>
+
 #include<iostream>
+
 #include"Engine.h"
+
 #include<string>
+
 #include<memory>
 
 //screen dimensions
