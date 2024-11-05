@@ -21,10 +21,6 @@ if (!texture) {
 }
 
 
-// Store the texture in the map using a unique pointer
-//using map std::unordered_map<std::string, 
-// std::unique_ptr<SDL_Texture, SDL_Deleter>> textures;
-
 textures[key]= std::unique_ptr<SDL_Texture, SDL_Deleter>(texture);
 //key is given name of texture
 
