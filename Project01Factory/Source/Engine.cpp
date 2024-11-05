@@ -49,10 +49,14 @@ int Engine::loadLevel() {
     }
 
     // Load textures into the texture manager
+   
     Textures::load("Player", "Assets/Run (7).png", renderer);
     Textures::load("Enemy", "Assets/treeLog.png", renderer);
 
-    if (!Textures::load("Player", "Assets/Run (7).png", renderer)) {
+   
+
+
+ if (!Textures::load("Player", "Assets/Run (7).png", renderer)) {
         SDL_Log("Texture failed to load");
     }
     if (!Textures::load("Enemy", "Assets/treeLog.png", renderer)) {
