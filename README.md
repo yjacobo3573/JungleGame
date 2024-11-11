@@ -14,3 +14,4 @@
    As part of Assignment 03 SDL2, I further developed my game and loaded all my textures from an xml file. Moreover, I implemented a view class that tracks the center of the view, scale, and rotation angle.
    I stored it statically and intialized it in the engine. Furthermore, I decided I wanted to specifically follow the player, so I decided to make another component named CameraFollower this class implements the update method by getting the body position of the player and the screen size in order to to update the Engines static member (View view) with the new values replacing the default values. 
    I also implemented frame rate limiting in my engine run method in order to have a smoother and more accurate game play. I also decided to load my background image and now you can see a glimpse of my game aesthetic moving forward.
+[screen-capture (51).webm](https://github.com/user-attachments/assets/0fa78a03-186e-480c-8b5f-19fb5115f08b)
