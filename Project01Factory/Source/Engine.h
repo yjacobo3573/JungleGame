@@ -13,14 +13,23 @@
 
 #include"GameObject.h"
 
+#include "View.h"
+
 class ComponentFactory;
 
 class Engine {
 
 	//members
      public: 
+      static View view; 
+      static constexpr int targetFPS= 60;
 
-     int width;
+      static constexpr float frameDuration= 1000.0f/targetFPS; 
+//in milliseconds which is 16.67
+
+      static float deltaTime;
+
+      int width;
 
 	  std::unique_ptr < ComponentFactory > compoLibrary;
 
@@ -59,6 +68,7 @@ private:
 
 	   SDL_Window* window; // SDL window 
 	   static SDL_Renderer* renderer; // SDL renderer (static)
+     
 	   std::vector < std::unique_ptr < GameObject >> gameObjects; // Track game objects
 };
 

@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LEVEL1>
+
+	<Object type="Background">
+		<BodyComponent x="0" y="0" width="1500" height="752" velocityX="0"
+			  velocityY="0" angle="0"/>
+		<SpriteComponent textureKey= "Background" />
+	</Object>
 	
 	<Object type="Player">
-		<BodyComponent x="0" y="200" width="160" height="160" velocityX="1" 
+		<BodyComponent x="0" y="296" width="300" height="300" velocityX="1" 
 			  velocityY="14" angle="0"/>
 		<SpriteComponent textureKey="Player" />
 		<ControllerComponent />
 		<SuperSpeedComponent />
 		<JumpComponent />
+		<CameraFollowerComponent />
 	</Object>
 
 	<Object type="Enemy">
-		<BodyComponent x="300" y="300" width="64" height="64" velocityX="0"
+		<BodyComponent x="580" y="430" width="200" height="200" velocityX="0"
 			  velocityY="0" angle="0"/>
 		<SpriteComponent textureKey="Enemy" />
 	</Object>

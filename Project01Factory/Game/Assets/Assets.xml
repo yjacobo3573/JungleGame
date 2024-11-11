@@ -1,0 +1,16 @@
+<Level1>
+
+	<Asset type="Background"> 
+	<textFile file="Background.png" />
+	</Asset>
+
+	<Asset type="Player">
+		<textFile file="Run (7).png" />
+	</Asset>
+
+	<Asset type="Enemy">
+		<textFile file="treeLog.png" />
+	</Asset>
+
+
+</Level1>

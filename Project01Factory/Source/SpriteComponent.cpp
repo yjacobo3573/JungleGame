@@ -16,6 +16,10 @@ void SpriteComponent::draw()
 
     SDL_Rect dst = { static_cast<int>(body->getX()), static_cast<int>(body->getY()),
                      static_cast<int>(body->getWidth()), static_cast<int>(body->getHeight()) };
+    
+    //transform the destination rectangle to view (screen) coordinates
+    dst= Engine::view.worldToView(dst);
+    
     int angle = static_cast<int>(body->getAngle());
 
     if (!Engine::getRenderer()) {

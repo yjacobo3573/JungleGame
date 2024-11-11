@@ -18,6 +18,8 @@ class GameObject
 {
 
 public:
+
+    GameObject(const std::string& type); //Constructor to initialize type
     template<typename T>
     void add(std::unique_ptr<T> component) {
         static_assert(std::is_base_of<Component, T>::value, "T must derive from Component");
@@ -45,9 +47,10 @@ void update();
 
 void draw();
 
+std::string getType() const; //method to get the type
 
 private:
-
+  std::string type;
   std::unordered_map<std::type_index, std::unique_ptr<Component>> components;
 
 }; 

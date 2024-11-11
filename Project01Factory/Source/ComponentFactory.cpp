@@ -80,6 +80,11 @@ std::unique_ptr<Component> ComponentFactory::createJumpComponent(GameObject& own
 	return std::make_unique<JumpComponent>(owner);
 }
 
+std::unique_ptr<Component> ComponentFactory::createCameraFollowerComponent(GameObject& owner, const tinyxml2::XMLElement* objectElement)
+{
+	return std::make_unique<CameraFollowerComponent>(owner);
+}
+
 void ComponentFactory::registerComponent(const std::string& componentType, std::function<std::unique_ptr<Component>(GameObject& ,const tinyxml2::XMLElement*)> creator)
 {
 

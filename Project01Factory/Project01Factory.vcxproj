@@ -19,9 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <Xml Include="Assets\Assets.xml" />
     <Xml Include="Assets\Object.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\CameraFollowerComponent.cpp" />
     <ClCompile Include="Source\JumpComponent.cpp" />
     <ClCompile Include="Source\ControllerComponent.cpp" />
     <ClCompile Include="Source\BodyComponent.cpp" />
@@ -34,8 +36,10 @@
     <ClCompile Include="Source\SuperSpeedComponent.cpp" />
     <ClCompile Include="Source\Textures.cpp" />
     <ClCompile Include="Source\SpriteComponent.cpp" />
+    <ClCompile Include="Source\View.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\CameraFollowerComponent.h" />
     <ClInclude Include="Source\JumpComponent.h" />
     <ClInclude Include="Source\ControllerComponent.h" />
     <ClInclude Include="Source\BodyComponent.h" />
@@ -47,6 +51,7 @@
     <ClInclude Include="Source\SuperSpeedComponent.h" />
     <ClInclude Include="Source\Textures.h" />
     <ClInclude Include="Source\SpriteComponent.h" />
+    <ClInclude Include="Source\View.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -138,6 +143,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

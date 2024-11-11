@@ -1,6 +1,10 @@
 #include "GameObject.h"
 
 
+GameObject::GameObject(const std::string& type) :type(type)
+{
+}
+
 //update all components.
 void GameObject::update() {
     for (auto& pair : components) {
@@ -15,4 +19,9 @@ void GameObject::draw() {
         pair.second->draw();
     }
 
+}
+
+std::string GameObject::getType() const
+{
+    return type;
 }
