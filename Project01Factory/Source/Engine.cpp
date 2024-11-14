@@ -61,7 +61,12 @@ int Engine::loadLevel() {
 
 	// Load textures into the texture manager
 	tinyxml2::XMLDocument doc;
-	
+	// Load the XML file directly from "Assets/Assets.xml"
+	if (doc.LoadFile("Assets/Assets.xml") != tinyxml2::XML_SUCCESS) {
+		std::cerr << "Failed to load XML file: Assets/Assets.xml" << std::endl;
+		return -1;
+	}
+
 	// Access the root node (e.g., <Level1>)
 	tinyxml2::XMLElement* level = doc.FirstChildElement("Level1");
 	if (!level) {

@@ -1,7 +1,7 @@
 <Level1>
 
 	<Asset type="Background"> 
-	<textFile file="Background.png" />
+	    <textFile file="Background.png" />
 	</Asset>
 
 	<Asset type="Player">
