@@ -18,7 +18,7 @@ class GameObject
 {
 
 public:
-
+    GameObject() = default;
     GameObject(const std::string& type); //Constructor to initialize type
     template<typename T>
     void add(std::unique_ptr<T> component) {

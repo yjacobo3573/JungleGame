@@ -1,21 +1,41 @@
 #include "Engine.h"
 #include"ComponentFactory.h"
 #include"GameObject.h"
+#include <Box2D/Box2D.h>
+#include"GameObject.h"
 #include "BodyComponent.h"
+#include"Component.h"
 #include<chrono>  //for precise time measurement
+#include<memory>
 #include<iostream>
 
 SDL_Renderer* Engine::renderer = nullptr;
 float Engine::deltaTime = 0.0f;
 View Engine::view(750.0f, 376.0f, 1.0f, 0.0f); // Initialize view with default center, scale, and rotation
+const float Engine::SCALE = 100.0f;
 
+Engine::Engine() :world(b2Vec2(0.0f, 9.8f))
+ 
+{
 
-Engine::Engine() {
+	GameObject object; // Create a temporary GameObject
+	bodyComponent = std::make_unique<BodyComponent>(
+		object,       // Owner
+		0.0, 0.0,     // x, y
+		0.0,          // Angle
+		0.0, 0.0,     // VelocityX, VelocityY
+		100, 100,     // Width, Height
+		1.0f,         // Density
+		0.5f,         // Friction
+		true,         // isDynamic
+		0.0f          // LinearDamping
+	);
 	isRunning = false;
 	width = 0;
 	window = nullptr;
-
+  
 	compoLibrary = std::make_unique < ComponentFactory >();
+   
 
 	compoLibrary->registerComponent("BodyComponent", [](GameObject& owner,
 		const tinyxml2::XMLElement* element) {
@@ -55,7 +75,7 @@ Engine::Engine() {
 
 int Engine::loadLevel() {
 	// Initialize the engine
-	if (!init("SDL2 Game Engine", 1500, 752)) {
+	if (!init("SDL2 Game Engine", SCREEN_WIDTH, SCREEN_HEIGHT)) {
 		return -1;
 	}
 
@@ -104,6 +124,7 @@ int Engine::loadLevel() {
 	std::unique_ptr < GameObject > player = std::make_unique < GameObject >("Player");
 	std::unique_ptr < GameObject > enemy = std::make_unique < GameObject >("Enemy");
 	std::unique_ptr < GameObject > background = std::make_unique < GameObject >("Background");
+	std::unique_ptr < GameObject > mushroomEnemy = std::make_unique < GameObject >("evilMushroom");
 
 	//Load the XML document
 
@@ -158,7 +179,7 @@ int Engine::loadLevel() {
 
 	}
 
-	// Loop for Enemy components
+	// Loop for Log Enemy components
 	for (const tinyxml2::XMLElement* objectElem = root->FirstChildElement("Object"); objectElem != nullptr; objectElem = objectElem->NextSiblingElement("Object")) {
 		if (std::string(objectElem->Attribute("type")) == "Enemy") {
 			for (const tinyxml2::XMLElement* componentElem = objectElem->FirstChildElement(); componentElem != nullptr; componentElem = componentElem->NextSiblingElement()) {
@@ -174,11 +195,30 @@ int Engine::loadLevel() {
 		}
 	}
 
-
+    //Loop for Mushroom enemy components
+	for (const tinyxml2::XMLElement* objectElem = root->FirstChildElement("Object"); objectElem != nullptr; objectElem = objectElem->NextSiblingElement("Object")) {
+		if (std::string(objectElem->Attribute("type")) == "evilMushroom") {
+			for (const tinyxml2::XMLElement* componentElem = objectElem->FirstChildElement(); componentElem != nullptr; componentElem = componentElem->NextSiblingElement()) {
+				auto component = compoLibrary->createComponent(componentElem->Name(), *mushroomEnemy, componentElem);
+				if (component) {
+					std::cout << "Adding component from XML: " << componentElem->Name() << std::endl;
+					mushroomEnemy->add(std::move(component));
+				}
+				else {
+					std::cerr << "Failed to create component: " << componentElem->Name() << std::endl;
+				}
+			}
+		}
+	}
 	//Add game objects to the engine
 	addGameObject(std::move(player));
 	addGameObject(std::move(enemy));
 	addGameObject(std::move(background));
+    addGameObject(std::move(mushroomEnemy));
+
+
+	// create physics world bodies
+	physicsWorld();
 
 	run();
 
@@ -219,13 +259,26 @@ void Engine::handleEvents() {
 			isRunning = false;
 		}
 		Input::processEvent(event); // Call static Input method
+
+		
 	}
 }
 
 void Engine::update() {
+
+
+     
+	world.Step(deltaTime, 6, 2);
+   checkCollisions();
+	
+	
 	for (auto& gameObject : gameObjects) {
 		gameObject->update(); // Update each GameObject
-	}
+	  
+     }
+
+	
+	
 }
 
 void Engine::render() {
@@ -307,3 +360,117 @@ void Engine::run() {
 SDL_Renderer* Engine::getRenderer() {
 	return renderer;
 }
+
+b2Body* Engine::CreateBox(b2World& world, float x, float y, float width, float height, bool isDynamic, float density, float friction, float linearDamping)
+{
+	b2BodyDef bodyDef; // A structure that holds information about 
+	// the body, like its type and position.
+
+	bodyDef.position.Set(x / SCALE, y / SCALE); //converts pixels to meters
+
+	if (isDynamic) {
+		bodyDef.type = b2_dynamicBody;
+	}
+
+	else {
+		bodyDef.type = b2_staticBody;
+	}
+
+	b2Body* body = world.CreateBody(&bodyDef);
+
+	//Define the shape
+	b2PolygonShape boxShape;
+	boxShape.SetAsBox((width / 2) / SCALE, (height / 2) / SCALE);
+
+	//Define the fixture
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &boxShape;
+	fixtureDef.density = density;
+	fixtureDef.friction = friction;
+
+
+	body->CreateFixture(&fixtureDef);
+
+	// bodyComponent->setBody(body); //set Box2D body in BodyComponent
+
+
+	return body;
+}
+
+void Engine::physicsWorld()
+{
+
+	//create box2d world
+	std::string groundTag = "Ground";
+	b2Body* ground = CreateBox(world, 0, 470, 3500, 10, false, 1.0f, 0.3f, 2);
+	//ground->GetUserData().pointer = reinterpret_cast<uintptr_t>(&groundTag);
+
+	for (auto& gameObject : gameObjects)
+	{
+		if (gameObject->getType() == "Player") {
+			auto body = gameObject->get<BodyComponent>();
+			if (body) {
+				std::string playerTag = "Player";
+
+				b2Body* dynamicPlayer = CreateBox(world, body->getX(), body->getY(), body->getWidth(), body->getHeight(), body->getisDynamic(), body->getDensity(), body->getFriction(), 2);
+
+				body->setBody(dynamicPlayer);
+
+				dynamicPlayer->GetUserData().pointer = reinterpret_cast<uintptr_t>(gameObject.get()); //address to game object
+				//std::cout<<body->getY()<<std::endl;
+
+			}
+			else {
+				std::cout << "Null body." << std::endl;
+			}
+			continue;
+
+		}
+
+		if (gameObject->getType() == "evilMushroom") {
+			auto body = gameObject->get<BodyComponent>();
+
+			if (body) {
+				std::string mushroomTag = "evilMushroom";
+
+				b2Body* evilMushroom = CreateBox(world, body->getX(), body->getY(), body->getWidth(), body->getHeight(), body->getisDynamic(), body->getDensity(), body->getFriction(), 2);
+
+				body->setBody(evilMushroom);
+				evilMushroom->GetUserData().pointer = reinterpret_cast<uintptr_t>(gameObject.get());
+
+				//std::cout <<body->getWidth()<<std::endl;
+			}
+
+			else {
+				std::cout << "Null body." << std::endl;
+			}
+			continue;
+		}
+	}
+
+
+
+
+}
+
+void Engine::checkCollisions()
+{
+	//collision detection
+	for (b2Contact* contact = world.GetContactList(); contact; contact = contact->GetNext()) {
+		if (contact->IsTouching()) {
+			auto* objA = reinterpret_cast<GameObject*>(contact->GetFixtureA()->GetBody()->GetUserData().pointer);
+			auto* objB = reinterpret_cast<GameObject*>(contact->GetFixtureB()->GetBody()->GetUserData().pointer);
+
+			if (objA && objB) {  //ensure objects are not null
+				if ((objA->getType() == "evilMushroom" && objB->getType() == "Player") ||
+					(objA->getType() == "Player" && objB->getType() == "evilMushroom")){
+
+                    std::cout<<"Collision detected between Player and evilMushroom!"<<std::endl;
+				 }
+		   }
+			
+		}
+	}
+
+}
+

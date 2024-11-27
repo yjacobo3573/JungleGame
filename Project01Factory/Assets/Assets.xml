@@ -12,5 +12,10 @@
 		<textFile file="treeLog.png" />
 	</Asset>
 
+	<Asset type="evilMushroom">
+
+		<textFile file="evilMushroom.png" />
+	</Asset>
+
 
 </Level1>

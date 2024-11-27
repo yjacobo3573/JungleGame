@@ -1,6 +1,7 @@
 #include "ControllerComponent.h"
 #include "GameObject.h"
 #include "BodyComponent.h"
+#include <Box2D/Box2D.h>
 
 void ControllerComponent::update()
 {
@@ -9,16 +10,29 @@ auto body= parent().get<BodyComponent>();
 
 if (Input::isKeyDown(SDLK_RIGHT))
 {
-	int Velocityx= body->getVelocityX();
 
-   body->getX() += Velocityx;
+    auto velocityX= body->getVelocityX();
+
+	body->getBody()->SetLinearVelocity(b2Vec2(velocityX, 0.0f));
+
+    auto linearDamping= body->getLinearDamping();
+    
+    body->getBody()->SetLinearDamping(linearDamping);
+   
+
+ //body->setX(body->getX() + Velocityx);
 }
 
 if (Input::isKeyDown(SDLK_LEFT))
 {
-	int Velocityx = body->getVelocityX();
+    auto velocityX = body->getVelocityX();
 
-	body->getX() -= Velocityx;
+    body->getBody()->SetLinearVelocity(b2Vec2(-velocityX, 0.0f));
+
+    auto linearDamping = body->getLinearDamping();
+
+    body->getBody()->SetLinearDamping(linearDamping);
+    
 }
 
 

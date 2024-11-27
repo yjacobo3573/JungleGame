@@ -10,11 +10,8 @@ void JumpComponent::update()
 	{
 
 
-    int velocityY= body->getVelocityY();
-
-
-
-    body->getY() -= velocityY;
+    auto velocityY= body->getVelocityY();
+    body->getBody()->SetLinearVelocity(b2Vec2(0.0f, velocityY));
 
     }
 
@@ -23,7 +20,7 @@ void JumpComponent::update()
 	{
      int velocityY= body->getVelocityY();
 
-     body->getY() += velocityY;
+     body->setY(body->getY() + velocityY);
 
     }
 }

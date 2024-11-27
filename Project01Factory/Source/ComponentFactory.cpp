@@ -28,12 +28,15 @@ int height= objectElement->FloatAttribute("height", 0);
 float velocityX= objectElement->FloatAttribute("velocityX", 0.0f);
 float velocityY= objectElement->FloatAttribute("velocityY", 0.0f);
 float angle= objectElement->FloatAttribute("angle", 0.0f);
-   
+float density=objectElement->FloatAttribute("density", 0.0f);
+float friction=objectElement->FloatAttribute("friction", 0.0f);
+bool isDynamic=objectElement->BoolAttribute("isDynamic", false);
+float linearDamping= objectElement->FloatAttribute("linearDamping", 0.0f);
 
 
 //create and return a new BodyComponent instance using parsed values
 
-return std::make_unique<BodyComponent>(owner, x, y, angle, velocityX, velocityY, width, height);
+return std::make_unique<BodyComponent>(owner, x, y, angle, velocityX, velocityY, width, height, density, friction, isDynamic, linearDamping);
 
 
 

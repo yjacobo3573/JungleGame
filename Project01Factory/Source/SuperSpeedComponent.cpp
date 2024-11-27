@@ -8,9 +8,12 @@ void SuperSpeedComponent::update()
 
 	if (Input::isKeyDown(SDLK_s))
 	{
+   
+    auto velocityX= body->getVelocityX()*9;
+    body->getBody()->SetLinearVelocity(b2Vec2(velocityX, 0.0f));
 
-  int velocityX= body->getVelocityX()*10;
-  body->getX() += velocityX;
+     auto linearDamping= body->getLinearDamping();
+     body->getBody()->SetLinearDamping(linearDamping);
 
     }
 }

@@ -3,13 +3,13 @@
 
 	<Object type="Background">
 		<BodyComponent x="0" y="0" width="1500" height="752" velocityX="0"
-			  velocityY="0" angle="0"/>
+			  velocityY="0" angle="0" density="1.0f" friction="0.3f" isDynamic="false" linearDamping="3.0f"/>
 		<SpriteComponent textureKey= "Background" />
 	</Object>
 	
 	<Object type="Player">
 		<BodyComponent x="0" y="296" width="300" height="300" velocityX="1" 
-			  velocityY="14" angle="0"/>
+			  velocityY="14" angle="0" density="1.0f" friction="0.3f" isDynamic="true" linearDamping="3.0f"/>
 		<SpriteComponent textureKey="Player" />
 		<ControllerComponent />
 		<SuperSpeedComponent />
@@ -18,9 +18,14 @@
 	</Object>
 
 	<Object type="Enemy">
-		<BodyComponent x="580" y="430" width="200" height="200" velocityX="0"
-			  velocityY="0" angle="0"/>
+		<BodyComponent x="580" y="450" width="150" height="150" velocityX="0"
+			  velocityY="0" angle="0" density="1.0f" friction="0.3f" isDynamic="false" linearDamping="3.0f"/>
 		<SpriteComponent textureKey="Enemy" />
 	</Object>
-	
+
+	<Object type="evilMushroom">
+		<BodyComponent x="1200" y="480" width="120" height="100" velocityX="0"
+			  velocityY="0" angle="0" density="1.0f" friction="0.3f" isDynamic="false" linearDamping="3.0f"/>
+		<SpriteComponent textureKey="evilMushroom" />
+	</Object>
 </LEVEL1>
