@@ -32,7 +32,7 @@ public:
   void update() override;
   void draw() override;
 
-
+  void drawDebugShape() override;
  
 
 private:

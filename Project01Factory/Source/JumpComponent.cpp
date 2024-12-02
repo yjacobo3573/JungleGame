@@ -2,6 +2,10 @@
 #include "GameObject.h"
 #include "BodyComponent.h"
 
+void JumpComponent::drawDebugShape()
+{
+}
+
 void JumpComponent::update()
 {
 	auto body = parent().get<BodyComponent>();
@@ -9,19 +13,22 @@ void JumpComponent::update()
 	if (Input::isKeyDown(SDLK_UP))
 	{
 
+   if(body){
 
-    auto velocityY= body->getVelocityY();
-    body->getBody()->SetLinearVelocity(b2Vec2(0.0f, velocityY));
-
+   float jumpForce= -10.0f;
+   body->getBody()->ApplyLinearImpulseToCenter(b2Vec2(0.0f, jumpForce), true);
+      }
     }
 
 
 	if (Input::isKeyDown(SDLK_DOWN))
 	{
+
+    if(body){
      int velocityY= body->getVelocityY();
 
      body->setY(body->getY() + velocityY);
-
+      }
     }
 }
 

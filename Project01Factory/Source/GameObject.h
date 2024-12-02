@@ -47,6 +47,8 @@ void update();
 
 void draw();
 
+void drawDebugShape();
+
 std::string getType() const; //method to get the type
 
 private:

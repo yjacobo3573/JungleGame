@@ -21,6 +21,14 @@ void GameObject::draw() {
 
 }
 
+void GameObject::drawDebugShape()
+{
+
+    for (auto& pair : components) {
+        pair.second->drawDebugShape();
+    }
+}
+
 std::string GameObject::getType() const
 {
     return type;

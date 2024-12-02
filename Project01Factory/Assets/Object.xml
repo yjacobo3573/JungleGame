@@ -2,30 +2,31 @@
 <LEVEL1>
 
 	<Object type="Background">
-		<BodyComponent x="0" y="0" width="1500" height="752" velocityX="0"
-			  velocityY="0" angle="0" density="1.0f" friction="0.3f" isDynamic="false" linearDamping="3.0f"/>
+		<BodyComponent x="0.0f" y="0.0f" width="1500.0f" height="752.0f" velocityX="0.0f"
+			  velocityY="0.0f" angle="0.0f" density="1.0f" friction="0.3f" isDynamic="false" linearDamping="3.0f"/>
 		<SpriteComponent textureKey= "Background" />
 	</Object>
 	
 	<Object type="Player">
-		<BodyComponent x="0" y="296" width="300" height="300" velocityX="1" 
-			  velocityY="14" angle="0" density="1.0f" friction="0.3f" isDynamic="true" linearDamping="3.0f"/>
+		<BodyComponent x="0.0f" y="280.0f" width="300.0f" height="300.0f" velocityX="1.0f" 
+			  velocityY="30.0f" angle="0.0f" density="1.0f" friction="0.3f" isDynamic="true" linearDamping="3.0f"/>
 		<SpriteComponent textureKey="Player" />
 		<ControllerComponent />
 		<SuperSpeedComponent />
 		<JumpComponent />
 		<CameraFollowerComponent />
+		<DamageComponent collisions="0" isAlive="true" />
 	</Object>
 
-	<Object type="Enemy">
-		<BodyComponent x="580" y="450" width="150" height="150" velocityX="0"
-			  velocityY="0" angle="0" density="1.0f" friction="0.3f" isDynamic="false" linearDamping="3.0f"/>
-		<SpriteComponent textureKey="Enemy" />
+	<Object type="treeLog">
+		<BodyComponent x="580.0f" y="450.0f" width="150.0f" height="150.0f" velocityX="0.0f"
+			  velocityY="0.0f" angle="0.0f" density="1.0f" friction="0.3f" isDynamic="false" linearDamping="3.0f"/>
+		<SpriteComponent textureKey="treeLog" />
 	</Object>
 
 	<Object type="evilMushroom">
-		<BodyComponent x="1200" y="480" width="120" height="100" velocityX="0"
-			  velocityY="0" angle="0" density="1.0f" friction="0.3f" isDynamic="false" linearDamping="3.0f"/>
+		<BodyComponent x="1200.0f" y="480" width="120.0f" height="100.0f" velocityX="0.0f"
+			  velocityY="0.0f" angle="0.0f" density="1.0f" friction="0.3f" isDynamic="false" linearDamping="3.0f"/>
 		<SpriteComponent textureKey="evilMushroom" />
 	</Object>
 </LEVEL1>

@@ -11,7 +11,7 @@ public:
 	JumpComponent(GameObject& owner) : Component(owner) {}
 
 
-
+	void drawDebugShape() override;
 	void update() override;
 	void draw() override;
 };

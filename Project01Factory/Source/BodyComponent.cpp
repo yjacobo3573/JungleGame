@@ -29,6 +29,10 @@ void BodyComponent::update()
 	}*/
 }
 
+void BodyComponent::drawDebugShape()
+{
+}
+
 void BodyComponent::setBody(b2Body* body)
 {
 
@@ -49,43 +53,42 @@ b2Body* BodyComponent::getBody() const
 
 
 
-//scaling for getting the position in pixels to render
-//in sprite component
-double BodyComponent::getX() const
+
+float BodyComponent::getX() const
 {
 	return _x ;
 }
 
-double BodyComponent::getY() const
+float BodyComponent::getY() const
 {
 	return _y ;
 }
 
-double BodyComponent::getAngle() const
+float BodyComponent::getAngle() const
 {
 	// TODO: insert retur
 return _angle;
 }
 
-double BodyComponent::getVelocityX() const
+float BodyComponent::getVelocityX() const
 {
 	// TODO: insert return statement here
 return _velocityX;
 }
 
-double BodyComponent::getVelocityY() const
+float BodyComponent::getVelocityY() const
 {
 	// TODO: insert return statement here
 return _velocityY;
 }
 
-int BodyComponent::getWidth() const
+float BodyComponent::getWidth() const
 {
 	// TODO: insert return statement here
 return _width;
 }
 
-int BodyComponent::getHeight() const
+float BodyComponent::getHeight() const
 {
 	// TODO: insert return statement here
 return _height;
@@ -115,30 +118,30 @@ float BodyComponent::getLinearDamping() const
 return _linearDamping;
 }
 
-void BodyComponent::setX(double x)
+void BodyComponent::setX(float x)
 {
 
   _x=x;
 
 }
 
-void BodyComponent::setY(double y)
+void BodyComponent::setY(float y)
 {
 _y=y;
 }
 
-void BodyComponent::setAngle(double angle)
+void BodyComponent::setAngle(float angle)
 {
 
 _angle=angle;
 }
 
-void BodyComponent::setVelocityX(double velocityX)
+void BodyComponent::setVelocityX(float velocityX)
 {
 _velocityX=velocityX;
 }
 
-void BodyComponent::setVelocityY(double velocityY)
+void BodyComponent::setVelocityY(float velocityY)
 {
 _velocityY=velocityY;
 }

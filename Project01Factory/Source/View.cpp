@@ -1,4 +1,5 @@
 #include "View.h"
+#include "Engine.h"
 
 View::View()
 {
@@ -49,17 +50,28 @@ SDL_Point View::getCenter() const
 
 SDL_Point View::worldToView(const SDL_Point& worldPoint) const
 {
+
+const int screenCenterX= Engine::SCREEN_WIDTH/2;
+const int screenCenterY= Engine::SCREEN_HEIGHT/2;
+
 	SDL_Point viewPoint; //Create an SDL_Point to store transformed coordinates
-    viewPoint.x= static_cast<int>((worldPoint.x-x) * scale+750); //transform x coordinate
-    viewPoint.y= static_cast<int>((worldPoint.y-y) * scale+376); //transform y coordinate
-    return viewPoint;
+    viewPoint.x= static_cast<int>((worldPoint.x-x) * scale+screenCenterX); //transform x coordinate
+    viewPoint.y= static_cast<int>((worldPoint.y-y) * scale+screenCenterY); //transform y coordinate
+    
+    std::cout << "View Center: (" << x << ", " << y << ")" << std::endl;
+
+  return viewPoint;
 }
 
 SDL_Rect View::worldToView(const SDL_Rect& worldRect) const
 {
+
+    const int screenCenterX = Engine::SCREEN_WIDTH / 2;
+    const int screenCenterY = Engine::SCREEN_HEIGHT / 2;
+
 	SDL_Rect viewRect; //create an SDL_Rect to store transformed rectangle coordinates and size
-    viewRect.x= static_cast<int>((worldRect.x-x) *scale+750); //transform x position
-    viewRect.y=static_cast<int>((worldRect.y-y) *scale+376);
+    viewRect.x= static_cast<int>((worldRect.x-x) *scale+screenCenterX); //transform x position
+    viewRect.y=static_cast<int>((worldRect.y-y) *scale+screenCenterY);
     viewRect.w= static_cast<int>(worldRect.w*scale);
     viewRect.h=static_cast<int>(worldRect.h*scale);
     return viewRect;

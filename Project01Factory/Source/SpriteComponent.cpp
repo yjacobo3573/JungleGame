@@ -31,6 +31,25 @@ void SpriteComponent::draw()
     SDL_RenderCopyEx(Engine::getRenderer(), texture, nullptr, &dst, angle, nullptr, SDL_FLIP_NONE);
 }
 
+void SpriteComponent::drawDebugShape()
+{
+    auto body = parent().get<BodyComponent>();
+
+    if (!body) {
+        std::cerr << "BodyComponent not found!" << std::endl; // Enhanced error logging
+        return; // Exit early if there's no body
+    }
+    SDL_Rect debugRect = { static_cast<int>(body->getX()), static_cast<int>(body->getY()),
+                     static_cast<int>(body->getWidth()), static_cast<int>(body->getHeight()) };
+
+
+    SDL_SetRenderDrawColor(Engine::getRenderer(), 255, 0, 0, 255); // Red for debug
+    SDL_RenderDrawRect(Engine::getRenderer(), &debugRect);
+
+
+
+}
+
 
 
 

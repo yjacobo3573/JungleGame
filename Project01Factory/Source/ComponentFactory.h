@@ -12,6 +12,9 @@
 #include "SuperSpeedComponent.h"
 #include "JumpComponent.h"
 #include "CameraFollowerComponent.h"
+#include "DamageComponent.h"
+#include "GameObject.h"
+
 class ComponentFactory
 {
 
@@ -32,9 +35,16 @@ static std::unique_ptr<Component> createSuperSpeedComponent(GameObject& owner, c
 
 static std::unique_ptr<Component> createJumpComponent(GameObject& owner, const tinyxml2::XMLElement* objectElement);
 
-static std::unique_ptr<Component> createCameraFollowerComponent(GameObject& owner, const tinyxml2::XMLElement* objectElement);
+static std::unique_ptr<Component> createCameraFollowerComponent(GameObject& owner, const tinyxml2::XMLElement* objectElement); 
+static std::unique_ptr<Component> createDamageComponent(GameObject& owner, const tinyxml2::XMLElement* objectElement); 
 
- void registerComponent(const std::string& componentType, std::function<std::unique_ptr<Component>(GameObject&, const tinyxml2::XMLElement*)>creator);
+ 
+
+
+
+
+
+void registerComponent(const std::string& componentType, std::function<std::unique_ptr<Component>(GameObject&, const tinyxml2::XMLElement*)>creator);
 
 
 

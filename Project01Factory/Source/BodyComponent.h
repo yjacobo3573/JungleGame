@@ -11,41 +11,43 @@ class BodyComponent: public Component
 {
 public:
 
-BodyComponent(GameObject& owner, double x, double y, double angle, double velocityX, double velocityY, int width, int height, float density, float friction, bool isDynamic, float linearDamping )
+BodyComponent(GameObject& owner, float x, float y, float angle, float velocityX, float velocityY, float width, float height, float density, float friction, bool isDynamic, float linearDamping )
     : Component(owner),_x(x), _y(y), _angle(angle), _velocityX(velocityX), _velocityY(velocityY), _width(width), _height(height), _density(density), _friction(friction), _isDynamic(isDynamic), _linearDamping(linearDamping) {}
 
 
 BodyComponent()=default;
 
-double getX() const;
-double getY() const;
-double getAngle() const;
+float getX() const;
+float getY() const;
+float getAngle() const;
 
-double getVelocityX() const;
-double getVelocityY() const;
+float getVelocityX() const;
+float getVelocityY() const;
 
 
 
-int getWidth() const;
-int getHeight() const;
+float getWidth() const;
+float getHeight() const;
 
 float getDensity() const;
 float getFriction() const;
 bool  getisDynamic() const;
 float getLinearDamping() const;
 
-void setX(double x);
-void setY(double y);
-void setAngle(double angle);
+void setX(float x);
+void setY(float y);
+void setAngle(float angle);
 
-void setVelocityX(double velocityX);
-void setVelocityY(double velocityY);
+void setVelocityX(float velocityX);
+void setVelocityY(float velocityY);
 
 
 void draw() override; 
 
 
 void update() override; 
+
+void drawDebugShape() override;
 
 //Setter for assigning the b2Body
 void setBody(b2Body* body);
@@ -57,13 +59,13 @@ b2Body* getBody() const;
 
 
 private:
-   double _x;
-   double _y;
-   double _angle;
-   double _velocityX;
-   double _velocityY;
-   int _width;
-   int _height;
+   float _x;
+   float _y;
+   float _angle;
+   float _velocityX;
+   float _velocityY;
+   float _width;
+   float _height;
    float _density;
    float _friction;
    bool _isDynamic;

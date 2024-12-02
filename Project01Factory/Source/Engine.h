@@ -37,8 +37,7 @@ class Engine {
 
       int width;
 
-     const int SCREEN_WIDTH=1500;
-     const int SCREEN_HEIGHT=752;
+    
 
 	  std::unique_ptr < ComponentFactory > compoLibrary;
       std::unique_ptr<BodyComponent> bodyComponent;
@@ -82,6 +81,10 @@ class Engine {
 
     void checkCollisions();
 
+	static const int SCREEN_WIDTH;
+	static const int SCREEN_HEIGHT;
+
+    void endGame(GameObject* gameObject);
 	  
 private:
        bool isRunning; // Engine running state 
@@ -93,10 +96,8 @@ private:
        
 	   b2World world;
       
-     //  BodyComponent* bodyComponent();
-
-     // GameObject& object;
-
+    
+	 
        
 };
 

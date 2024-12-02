@@ -8,16 +8,22 @@ void SuperSpeedComponent::update()
 
 	if (Input::isKeyDown(SDLK_s))
 	{
+        if (body) {
+
    
-    auto velocityX= body->getVelocityX()*9;
+    auto velocityX= body->getVelocityX()*9.0f;
     body->getBody()->SetLinearVelocity(b2Vec2(velocityX, 0.0f));
 
      auto linearDamping= body->getLinearDamping();
      body->getBody()->SetLinearDamping(linearDamping);
-
+        }
     }
 }
 
 void SuperSpeedComponent::draw()
+{
+}
+
+void SuperSpeedComponent::drawDebugShape()
 {
 }

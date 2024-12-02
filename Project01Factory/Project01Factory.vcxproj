@@ -24,6 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\CameraFollowerComponent.cpp" />
+    <ClCompile Include="Source\DamageComponent.cpp" />
     <ClCompile Include="Source\JumpComponent.cpp" />
     <ClCompile Include="Source\ControllerComponent.cpp" />
     <ClCompile Include="Source\BodyComponent.cpp" />
@@ -40,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\CameraFollowerComponent.h" />
+    <ClInclude Include="Source\DamageComponent.h" />
     <ClInclude Include="Source\JumpComponent.h" />
     <ClInclude Include="Source\ControllerComponent.h" />
     <ClInclude Include="Source\BodyComponent.h" />

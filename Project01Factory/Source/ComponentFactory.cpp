@@ -23,8 +23,8 @@ std::unique_ptr<Component> ComponentFactory::createBodyComponent(GameObject& own
 //retrieve each attribute and assign to variables
 float x= objectElement->FloatAttribute("x", 0.0f);
 float y= objectElement->FloatAttribute("y", 0.0f);
-int width= objectElement->FloatAttribute("width", 0);
-int height= objectElement->FloatAttribute("height", 0);
+float width= objectElement->FloatAttribute("width", 0.0f);
+float height= objectElement->FloatAttribute("height", 0.0f);
 float velocityX= objectElement->FloatAttribute("velocityX", 0.0f);
 float velocityY= objectElement->FloatAttribute("velocityY", 0.0f);
 float angle= objectElement->FloatAttribute("angle", 0.0f);
@@ -86,6 +86,23 @@ std::unique_ptr<Component> ComponentFactory::createJumpComponent(GameObject& own
 std::unique_ptr<Component> ComponentFactory::createCameraFollowerComponent(GameObject& owner, const tinyxml2::XMLElement* objectElement)
 {
 	return std::make_unique<CameraFollowerComponent>(owner);
+}
+
+std::unique_ptr<Component> ComponentFactory::createDamageComponent(GameObject& owner, const tinyxml2::XMLElement* objectElement)
+{
+	if (std::string(objectElement->Name()) != "DamageComponent")
+	{
+
+		std::cerr << "Error: Expected DamageComponent element";
+		return nullptr;
+	}
+
+
+     int collisions= objectElement->IntAttribute("collisions",0);
+     bool isAlive= objectElement->BoolAttribute("isAlive", true);
+
+     return std::make_unique<DamageComponent>(owner, collisions, isAlive);
+
 }
 
 void ComponentFactory::registerComponent(const std::string& componentType, std::function<std::unique_ptr<Component>(GameObject& ,const tinyxml2::XMLElement*)> creator)

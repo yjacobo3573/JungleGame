@@ -13,7 +13,7 @@ class SuperSpeedComponent : public Component {
 		void update() override;
 		void draw() override;
 
-
+		void drawDebugShape() override;
 
 };
 

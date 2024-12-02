@@ -8,7 +8,7 @@
 		<textFile file="Run (7).png" />
 	</Asset>
 
-	<Asset type="Enemy">
+	<Asset type="treeLog">
 		<textFile file="treeLog.png" />
 	</Asset>
 

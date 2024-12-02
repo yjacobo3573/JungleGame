@@ -19,6 +19,7 @@
     <ClCompile Include="Source\JumpComponent.cpp" />
     <ClCompile Include="Source\View.cpp" />
     <ClCompile Include="Source\CameraFollowerComponent.cpp" />
+    <ClCompile Include="Source\DamageComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Engine.h" />
@@ -34,5 +35,6 @@
     <ClInclude Include="Source\JumpComponent.h" />
     <ClInclude Include="Source\View.h" />
     <ClInclude Include="Source\CameraFollowerComponent.h" />
+    <ClInclude Include="Source\DamageComponent.h" />
   </ItemGroup>
 </Project>
