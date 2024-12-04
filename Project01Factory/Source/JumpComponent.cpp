@@ -21,15 +21,7 @@ void JumpComponent::update()
     }
 
 
-	if (Input::isKeyDown(SDLK_DOWN))
-	{
-
-    if(body){
-     int velocityY= body->getVelocityY();
-
-     body->setY(body->getY() + velocityY);
-      }
-    }
+	
 }
 
 void JumpComponent::draw()
