@@ -26,8 +26,8 @@ void CameraFollowerComponent::update()
    
 
     // Defines camera boundaries to avoid showing white space
-    float halfScreenWidth = Engine::SCREEN_WIDTH/(2.0f*1.0f); // Half of the screen width
-    float halfScreenHeight = Engine::SCREEN_HEIGHT/(2.0f*1.0f); // Half of the screen height
+    float halfScreenWidth = Engine::SCREEN_WIDTH/(2.0f*1.4f); // Half of the screen width
+    float halfScreenHeight = Engine::SCREEN_HEIGHT/(2.0f*1.4f); // Half of the screen height
 
     // Clamp camera's x position
     float cameraX = std::clamp(playerX, halfScreenWidth, Engine::SCREEN_WIDTH - halfScreenWidth);
@@ -36,7 +36,7 @@ void CameraFollowerComponent::update()
     float cameraY = std::clamp(playerY, halfScreenHeight, Engine::SCREEN_HEIGHT - halfScreenHeight);
      
    
-    Engine::view.setScale(1.0f);
+    Engine::view.setScale(1.4f);
     // Update the view with the clamped position and scale
     Engine::view.setCenter(cameraX, cameraY);
     
