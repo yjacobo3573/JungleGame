@@ -22,5 +22,6 @@
       As part of Assignment 04 Physics, I integrated box2d into my game and made dynamic/static bodies. I had gravity in the physics world, so I created a ground body so that my player wouldn't fall down. After that I had to modify all my player's movement logic to adjust to the new Box2D body. 
       I stored a reference to the Box2D body in my body component in order to retrieve it easily. I used linear velocity and damping for general walking/running. For jumping, I used Linear Impulse to make the body move upward. Moreover, I implemented contact listening with my enemies and I made it so that if I collide more than 3 times the players is removed, marking the end of the game. I also added some spawning if you press the space key bees will start spawning close to the tree log area.
        Below is a video showing full functionality
+[screen-capture (57).webm](https://github.com/user-attachments/assets/25320b16-a552-49c0-a0b0-4c7e73e2a469)
 
        
