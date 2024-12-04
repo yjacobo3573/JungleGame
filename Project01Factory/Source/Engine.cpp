@@ -355,7 +355,7 @@ void Engine::addGameObject(std::unique_ptr < GameObject > gameObject) {
 
 	
 	gameObjects.push_back(std::move(gameObject)); // Add the game object to the list
-		//toAdd.push_back(std::move(gameObject));
+		
     }
 	else {
 		std::cerr<<"Attempted to add null game object!";
@@ -375,10 +375,7 @@ void Engine::run() {
 		update();
 		render();
 
-		/* gameObjects.insert(gameObjects.end(),
-		   std::make_move_iterator(toAdd.begin()),
-		   std::make_move_iterator(toAdd.end()));
-	    toAdd.clear();*/
+		
 
 
 		//calculate frame duration
@@ -451,7 +448,7 @@ void Engine::physicsWorld()
 
 	//create box2d world
 	std::string groundTag = "Ground";
-	b2Body* ground = CreateBox(world, 0.0f, 490.0f, 3500.0f, 10.0f, false, 0.0f, 0.3f, 2.0f);
+	b2Body* ground = CreateBox(world, 0.0f, 480.0f, 3500.0f, 10.0f, false, 0.0f, 0.3f, 2.0f);
 	//ground->GetUserData().pointer = reinterpret_cast<uintptr_t>(&groundTag);
 
 	for (auto& gameObject : gameObjects)
