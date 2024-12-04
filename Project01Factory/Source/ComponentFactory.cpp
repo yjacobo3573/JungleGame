@@ -105,6 +105,11 @@ std::unique_ptr<Component> ComponentFactory::createDamageComponent(GameObject& o
 
 }
 
+std::unique_ptr<Component> ComponentFactory::createspawnComponent(GameObject& owner, const tinyxml2::XMLElement* objectElement)
+{
+	return std::make_unique<spawnComponent>(owner);
+}
+
 void ComponentFactory::registerComponent(const std::string& componentType, std::function<std::unique_ptr<Component>(GameObject& ,const tinyxml2::XMLElement*)> creator)
 {
 

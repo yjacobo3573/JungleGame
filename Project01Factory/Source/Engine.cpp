@@ -14,6 +14,8 @@ const float Engine::SCALE = 100.0f;
 
 const int Engine::SCREEN_HEIGHT=752;
 const int Engine::SCREEN_WIDTH=1500;
+std::vector<std::unique_ptr<GameObject>> Engine::toAdd;
+std::vector<std::unique_ptr<GameObject>> Engine::gameObjects;
 
 Engine::Engine() :world(b2Vec2(0.0f, 9.8f))
  
@@ -66,6 +68,12 @@ Engine::Engine() :world(b2Vec2(0.0f, 9.8f))
 		[](GameObject& owner,
 			const tinyxml2::XMLElement* element) {
 				return ComponentFactory::createDamageComponent(owner, element);
+		});
+
+	compoLibrary->registerComponent("spawnComponent",
+		[](GameObject& owner,
+			const tinyxml2::XMLElement* element) {
+				return ComponentFactory::createspawnComponent(owner, element);
 		});
 }
 
@@ -122,6 +130,8 @@ Engine::Engine() :world(b2Vec2(0.0f, 9.8f))
 
 	std::unique_ptr < GameObject > background = std::make_unique < GameObject >("Background");
 	std::unique_ptr < GameObject > mushroomEnemy = std::make_unique < GameObject >("evilMushroom");
+	std::unique_ptr < GameObject > bee = std::make_unique < GameObject >("bee");
+   
 
 	//Load the XML document
 
@@ -207,11 +217,33 @@ Engine::Engine() :world(b2Vec2(0.0f, 9.8f))
 			}
 		}
 	}
+
+
+//Loop for Bee components
+	for (const tinyxml2::XMLElement* objectElem = root->FirstChildElement("Object"); objectElem != nullptr; objectElem = objectElem->NextSiblingElement("Object")) {
+		if (std::string(objectElem->Attribute("type")) == "bee") {
+			for (const tinyxml2::XMLElement* componentElem = objectElem->FirstChildElement(); componentElem != nullptr; componentElem = componentElem->NextSiblingElement()) {
+				auto component = compoLibrary->createComponent(componentElem->Name(), *bee, componentElem);
+				if (component) {
+					std::cout << "Adding component from XML: " << componentElem->Name() << std::endl;
+					bee->add(std::move(component));
+				}
+				else {
+					std::cerr << "Failed to create component: " << componentElem->Name() << std::endl;
+				}
+			}
+		}
+	}
+
+
+
+
 	//Add game objects to the engine
 	addGameObject(std::move(player));
 	addGameObject(std::move(log));
 	addGameObject(std::move(background));
-    addGameObject(std::move(mushroomEnemy));
+    addGameObject(std::move(mushroomEnemy)); 
+    addGameObject(std::move(bee)); 
 
 
 	// create physics world bodies
@@ -313,8 +345,9 @@ bool Engine::running() {
 }
 
 void Engine::addGameObject(std::unique_ptr < GameObject > gameObject) {
-
+    
 	gameObjects.push_back(std::move(gameObject)); // Add the game object to the list
+	//toAdd.push_back(std::move(gameObject)); // Add the game object to the list
 }
 
 void Engine::run() {
@@ -329,6 +362,11 @@ void Engine::run() {
 		handleEvents();
 		update();
 		render();
+
+       /* gameObjects.insert(gameObjects.end(),
+           std::make_move_iterator(toAdd.begin()),
+           std::make_move_iterator(toAdd.end()));
+       // toAdd.clear();*/
 
 		//calculate frame duration
 		auto frameEndTime = clock::now(); //capture the end time after rendering the frame.

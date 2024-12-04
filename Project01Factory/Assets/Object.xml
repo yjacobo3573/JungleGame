@@ -29,4 +29,11 @@
 			  velocityY="0.0f" angle="0.0f" density="1.0f" friction="0.3f" isDynamic="false" linearDamping="3.0f"/>
 		<SpriteComponent textureKey="evilMushroom" />
 	</Object>
+
+	<Object type="bee">
+		<BodyComponent x="590.0f" y="230" width="50.0f" height="50.0f" velocityX="0.0f"
+			  velocityY="0.0f" angle="0.0f" density="0.0f" friction="0.0f" isDynamic="false" linearDamping="0.0f"/>
+		<SpriteComponent textureKey="Bee" />
+		<spawnComponent />
+	</Object>
 </LEVEL1>

@@ -17,5 +17,8 @@
 		<textFile file="evilMushroom.png" />
 	</Asset>
 
+	<Asset type="Bee">
+		<textFile file="bee.png"/>
+	</Asset>
 
 </Level1>

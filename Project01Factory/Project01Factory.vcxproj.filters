@@ -20,6 +20,7 @@
     <ClCompile Include="Source\View.cpp" />
     <ClCompile Include="Source\CameraFollowerComponent.cpp" />
     <ClCompile Include="Source\DamageComponent.cpp" />
+    <ClCompile Include="Source\spawnComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Engine.h" />
@@ -36,5 +37,6 @@
     <ClInclude Include="Source\View.h" />
     <ClInclude Include="Source\CameraFollowerComponent.h" />
     <ClInclude Include="Source\DamageComponent.h" />
+    <ClInclude Include="Source\spawnComponent.h" />
   </ItemGroup>
 </Project>

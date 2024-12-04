@@ -65,7 +65,7 @@ class Engine {
 	  bool running();
 
 	  // Add a GameObject to the engine 
-	  void addGameObject(std::unique_ptr < GameObject > gameObject);
+	 static void addGameObject(std::unique_ptr < GameObject > gameObject);
 
 	  //Run the engine(static)
 	  void run();
@@ -92,8 +92,8 @@ private:
 	   SDL_Window* window; // SDL window 
 	   static SDL_Renderer* renderer; // SDL renderer (static)
      
-	   std::vector < std::unique_ptr < GameObject >> gameObjects; // Track game objects
-       
+	  static std::vector < std::unique_ptr < GameObject >> gameObjects; // Track game objects
+       static std::vector<std::unique_ptr<GameObject>> toAdd;
 	   b2World world;
       
     

@@ -34,6 +34,7 @@
     <ClCompile Include="Source\Engine.cpp" />
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\spawnComponent.cpp" />
     <ClCompile Include="Source\SuperSpeedComponent.cpp" />
     <ClCompile Include="Source\Textures.cpp" />
     <ClCompile Include="Source\SpriteComponent.cpp" />
@@ -50,6 +51,7 @@
     <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\Engine.h" />
     <ClInclude Include="Source\Input.h" />
+    <ClInclude Include="Source\spawnComponent.h" />
     <ClInclude Include="Source\SuperSpeedComponent.h" />
     <ClInclude Include="Source\Textures.h" />
     <ClInclude Include="Source\SpriteComponent.h" />
