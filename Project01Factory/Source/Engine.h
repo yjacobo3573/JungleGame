@@ -85,6 +85,7 @@ class Engine {
 	static const int SCREEN_HEIGHT;
 
     void endGame(GameObject* gameObject);
+	static std::vector<std::unique_ptr<GameObject>> toAdd;
 	  
 private:
        bool isRunning; // Engine running state 
@@ -93,7 +94,7 @@ private:
 	   static SDL_Renderer* renderer; // SDL renderer (static)
      
 	  static std::vector < std::unique_ptr < GameObject >> gameObjects; // Track game objects
-       static std::vector<std::unique_ptr<GameObject>> toAdd;
+       
 	   b2World world;
       
     

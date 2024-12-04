@@ -14,6 +14,7 @@ const float Engine::SCALE = 100.0f;
 
 const int Engine::SCREEN_HEIGHT=752;
 const int Engine::SCREEN_WIDTH=1500;
+
 std::vector<std::unique_ptr<GameObject>> Engine::toAdd;
 std::vector<std::unique_ptr<GameObject>> Engine::gameObjects;
 
@@ -306,7 +307,12 @@ void Engine::update() {
 	  
      }
 
-	
+	//add new objects after the loop
+ // Add new objects after the loop
+	for (auto& obj : toAdd) {
+		gameObjects.push_back(std::move(obj));
+	}
+	toAdd.clear(); // Clear the temporary vector
 	
 }
 
@@ -322,7 +328,7 @@ void Engine::render() {
 	for (auto& gameObject : gameObjects) {
 		if (gameObject->getType() != "Background") {
 			gameObject->draw(); // Draw remaining items
-            gameObject->drawDebugShape(); 
+            //gameObject->drawDebugShape(); 
 		}
 	}
 
@@ -345,9 +351,15 @@ bool Engine::running() {
 }
 
 void Engine::addGameObject(std::unique_ptr < GameObject > gameObject) {
-    
+	if (gameObject) {
+
+	
 	gameObjects.push_back(std::move(gameObject)); // Add the game object to the list
-	//toAdd.push_back(std::move(gameObject)); // Add the game object to the list
+		//toAdd.push_back(std::move(gameObject));
+    }
+	else {
+		std::cerr<<"Attempted to add null game object!";
+	}
 }
 
 void Engine::run() {
@@ -363,10 +375,11 @@ void Engine::run() {
 		update();
 		render();
 
-       /* gameObjects.insert(gameObjects.end(),
-           std::make_move_iterator(toAdd.begin()),
-           std::make_move_iterator(toAdd.end()));
-       // toAdd.clear();*/
+		/* gameObjects.insert(gameObjects.end(),
+		   std::make_move_iterator(toAdd.begin()),
+		   std::make_move_iterator(toAdd.end()));
+	    toAdd.clear();*/
+
 
 		//calculate frame duration
 		auto frameEndTime = clock::now(); //capture the end time after rendering the frame.
