@@ -20,7 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Assets\Assets.xml" />
+    <Xml Include="Assets\AssetsLevel2.xml" />
     <Xml Include="Assets\Object.xml" />
+    <Xml Include="Assets\ObjectLevel2.xml" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\CameraFollowerComponent.cpp" />

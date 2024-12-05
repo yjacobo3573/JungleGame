@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Level2>
+
+	<Object type="BackgroundLevel2">
+		<BodyComponent x="0.0f" y="0.0f" width="1500.0f" height="752.0f" velocityX="0.0f"
+			  velocityY="0.0f" angle="0.0f" density="1.0f" friction="0.3f" isDynamic="false" linearDamping="3.0f"/>
+		<SpriteComponent textureKey= "BackgroundLevel2" />
+	</Object>
+
+	<Object type="PlayerLevel2">
+		<BodyComponent x="0.0f" y="280.0f" width="300.0f" height="300.0f" velocityX="1.0f"
+			  velocityY="30.0f" angle="0.0f" density="1.0f" friction="0.3f" isDynamic="true" linearDamping="3.0f"/>
+		<SpriteComponent textureKey="PlayerLevel2" />
+		<ControllerComponent />
+		<SuperSpeedComponent />
+		<JumpComponent />
+		<CameraFollowerComponent />
+		<DamageComponent collisions="0" isAlive="true" />
+	</Object>	
+	
+	
+	
+	
+	
+	
+</Level2>

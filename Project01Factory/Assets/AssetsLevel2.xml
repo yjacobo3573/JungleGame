@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Level2>
+
+
+	<Asset type="BackgroundLevel2">
+		<textFile file="Background.png" />
+	</Asset>
+
+	<Asset type="PlayerLevel2">
+		<textFile file="Run (7).png" />
+	</Asset>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</Level2>

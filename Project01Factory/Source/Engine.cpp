@@ -264,15 +264,16 @@ int Engine::loadLevel2()
 	// Load textures into the texture manager
 	tinyxml2::XMLDocument doc;
 	// Load the XML file directly from "Assets/Assets.xml"
-	if (doc.LoadFile("Assets/Assets.xml") != tinyxml2::XML_SUCCESS) {
-		std::cerr << "Failed to load XML file: Assets/Assets.xml" << std::endl;
+	if (doc.LoadFile("Assets/AssetsLevel2.xml") != tinyxml2::XML_SUCCESS) {
+		std::cerr << "Failed to load XML file: Assets/AssetsLevel2.xml" << std::endl;
 		return -1;
 	}
 
-	// Access the root node (e.g., <Level1>)
-	tinyxml2::XMLElement* level = doc.FirstChildElement("Level1");
-	if (!level) {
-		std::cerr << "No <Level1> element found in XML file." << std::endl;
+	// Access the root node (e.g., <Level2>)
+	tinyxml2::XMLElement* level = doc.FirstChildElement("Level2");
+	
+    if (!level) {
+		std::cerr << "No <Level2> element found in XML file." << std::endl;
 		return -1;
 	}
 
@@ -300,20 +301,21 @@ int Engine::loadLevel2()
 	}
 	//Load the XML document
 
-	if (doc.LoadFile("Assets/Object.xml") == tinyxml2::XML_SUCCESS) {
+	if (doc.LoadFile("Assets/ObjectLevel2.xml") == tinyxml2::XML_SUCCESS) {
 		std::cout << "XML file loaded successfully!" << std::endl;
 	}
 	else {
 		std::cerr << "Failed to load XML file." << std::endl;
 	}
-	std::unique_ptr < GameObject > playerLevel2 = std::make_unique < GameObject >("Player");
+	std::unique_ptr < GameObject > playerLevel2 = std::make_unique < GameObject >("PlayerLevel2");
+	std::unique_ptr < GameObject > backgroundLevel2 = std::make_unique < GameObject >("BackgroundLevel2");
 
 	// Get the root element
 	tinyxml2::XMLElement* root = doc.RootElement();
 
 	//loop for player components
 	for (const tinyxml2::XMLElement* objectElem = root->FirstChildElement("Object"); objectElem != nullptr; objectElem = objectElem->NextSiblingElement("Object")) {
-		if (std::string(objectElem->Attribute("type")) == "Player") {
+		if (std::string(objectElem->Attribute("type")) == "PlayerLevel2") {
 			for (const tinyxml2::XMLElement* componentElem = objectElem->FirstChildElement(); componentElem != nullptr; componentElem = componentElem->NextSiblingElement()) {
 				auto component = compoLibrary->createComponent(componentElem->Name(), *playerLevel2, componentElem);
 				if (component) {
@@ -327,12 +329,48 @@ int Engine::loadLevel2()
 
 			}
 		}
+         //loop for background components
+		if (std::string(objectElem->Attribute("type")) == "BackgroundLevel2") {
+			for (const tinyxml2::XMLElement* componentElem = objectElem->FirstChildElement(); componentElem != nullptr; componentElem = componentElem->NextSiblingElement()) {
+				auto component = compoLibrary->createComponent(componentElem->Name(), *backgroundLevel2, componentElem);
+				if (component) {
+					std::cout << "Adding component from XML: " << componentElem->Name() << std::endl;
+					backgroundLevel2->add(std::move(component));
+
+				}
+				else {
+					std::cerr << "Failed to create component: " << componentElem->Name() << std::endl;
+				}
+
+			}
+		}
+
+         //loop for evil plant components
+
+		if (std::string(objectElem->Attribute("type")) == "BackgroundLevel2") {
+			for (const tinyxml2::XMLElement* componentElem = objectElem->FirstChildElement(); componentElem != nullptr; componentElem = componentElem->NextSiblingElement()) {
+				auto component = compoLibrary->createComponent(componentElem->Name(), *backgroundLevel2, componentElem);
+				if (component) {
+					std::cout << "Adding component from XML: " << componentElem->Name() << std::endl;
+					backgroundLevel2->add(std::move(component));
+
+				}
+				else {
+					std::cerr << "Failed to create component: " << componentElem->Name() << std::endl;
+				}
+
+			}
+		}
 
 	}
 
+   
+
 	//Add game objects to the engine
+    addGameObject(std::move(backgroundLevel2));
 	addGameObject(std::move(playerLevel2));
-	run();
+	
+    run();
 
 	
 }
@@ -429,7 +467,7 @@ void Engine::update() {
 			if (body) {
 
 				std::cout << x << std::endl;
-				if (x >= 1200.0f) {
+				if (x >= 1300.0f) {
 					destroyAllBodies();
 					loadLevel2();
 
@@ -445,12 +483,12 @@ void Engine::render() {
 	SDL_RenderClear(renderer);
 
 	for (auto& gameObject : gameObjects) {
-		if (gameObject->getType() == "Background") {
+		if (gameObject->getType() == "Background" ) {
 			gameObject->draw(); // Draw background 1st
 		}
 	}
 	for (auto& gameObject : gameObjects) {
-		if (gameObject->getType() != "Background") {
+		if (gameObject->getType() != "Background" ) {
 			gameObject->draw(); // Draw remaining items
             //gameObject->drawDebugShape(); 
 		}
@@ -737,8 +775,10 @@ void Engine::endGame(GameObject* gameObject)
 
 	if (body)
 	{
-      
-		body->getBody()->GetWorld()->DestroyBody(body->getBody());
+      auto b2Body= body->getBody();
+      if(b2Body){
+		b2Body->GetWorld()->DestroyBody(body->getBody());
+      }
 	}
 
 	for (int i = 0; i < gameObjects.size(); i++)
