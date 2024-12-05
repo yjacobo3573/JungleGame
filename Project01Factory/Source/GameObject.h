@@ -49,6 +49,8 @@ void draw();
 
 void drawDebugShape();
 
+ ~GameObject()=default;
+
 std::string getType() const; //method to get the type
 
 private:

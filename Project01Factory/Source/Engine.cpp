@@ -254,6 +254,115 @@ Engine::Engine() :world(b2Vec2(0.0f, 9.8f))
 
 }
 
+int Engine::loadLevel2()
+{
+	// Initialize the engine
+	if (!init("SDL2 Game Engine", SCREEN_WIDTH, SCREEN_HEIGHT)) {
+		return -1;
+	}
+
+	// Load textures into the texture manager
+	tinyxml2::XMLDocument doc;
+	// Load the XML file directly from "Assets/Assets.xml"
+	if (doc.LoadFile("Assets/Assets.xml") != tinyxml2::XML_SUCCESS) {
+		std::cerr << "Failed to load XML file: Assets/Assets.xml" << std::endl;
+		return -1;
+	}
+
+	// Access the root node (e.g., <Level1>)
+	tinyxml2::XMLElement* level = doc.FirstChildElement("Level1");
+	if (!level) {
+		std::cerr << "No <Level1> element found in XML file." << std::endl;
+		return -1;
+	}
+
+	// Loop through each <Asset> element
+
+	for (tinyxml2::XMLElement* asset = level->FirstChildElement("Asset"); asset != nullptr; asset = asset->NextSiblingElement("Asset")) {
+		const char* type = asset->Attribute("type"); // e.g., "Player", "Enemy", "Background"
+		tinyxml2::XMLElement* textFileElement = asset->FirstChildElement("textFile");
+		if (type && textFileElement) {
+			const char* file = textFileElement->Attribute("file");
+			if (file) {
+				// Load the texture from the specified file
+				std::string filePath = "Assets/" + std::string(file);
+				if (!Textures::load(type, filePath, renderer)) {
+					std::cerr << "Failed to load texture: " << type << " from " << filePath << std::endl;
+				}
+			}
+			else {
+				std::cerr << "No 'file' attribute found in <textFile> for asset type: " << type << std::endl;
+			}
+		}
+		else {
+			std::cerr << "Invalid <Asset> element or missing 'type' attribute." << std::endl;
+		}
+	}
+	//Load the XML document
+
+	if (doc.LoadFile("Assets/Object.xml") == tinyxml2::XML_SUCCESS) {
+		std::cout << "XML file loaded successfully!" << std::endl;
+	}
+	else {
+		std::cerr << "Failed to load XML file." << std::endl;
+	}
+	std::unique_ptr < GameObject > playerLevel2 = std::make_unique < GameObject >("Player");
+
+	// Get the root element
+	tinyxml2::XMLElement* root = doc.RootElement();
+
+	//loop for player components
+	for (const tinyxml2::XMLElement* objectElem = root->FirstChildElement("Object"); objectElem != nullptr; objectElem = objectElem->NextSiblingElement("Object")) {
+		if (std::string(objectElem->Attribute("type")) == "Player") {
+			for (const tinyxml2::XMLElement* componentElem = objectElem->FirstChildElement(); componentElem != nullptr; componentElem = componentElem->NextSiblingElement()) {
+				auto component = compoLibrary->createComponent(componentElem->Name(), *playerLevel2, componentElem);
+				if (component) {
+					std::cout << "Adding component from XML: " << componentElem->Name() << std::endl;
+					playerLevel2->add(std::move(component));
+
+				}
+				else {
+					std::cerr << "Failed to create component: " << componentElem->Name() << std::endl;
+				}
+
+			}
+		}
+
+	}
+
+	//Add game objects to the engine
+	addGameObject(std::move(playerLevel2));
+	run();
+
+	
+}
+
+void Engine::deleteGameObjects()
+{
+
+	gameObjects.clear();
+    
+}
+
+void Engine::destroyAllBodies()
+{
+	// Destroy all bodies in gameObjects
+	for (auto& gameObj : gameObjects) {
+		if (gameObj) {
+			auto body = gameObj->get<BodyComponent>();
+			if (body) {
+				auto b2Body = body->getBody();
+				if (b2Body) {
+					b2Body->GetWorld()->DestroyBody(b2Body);
+				}
+			}
+		}
+	}
+	deleteGameObjects(); // Clear the gameObjects vector after destruction
+}
+
+
+
 bool Engine::init(const char* title, int width, int height) {
 	this->width = width;
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -297,9 +406,9 @@ void Engine::handleEvents() {
 void Engine::update() {
 
 
-     
+     //step the world
 	world.Step(deltaTime, 6, 2);
-   checkCollisions();
+   checkCollisions();  //check for collisions
 	
 	
 	for (auto& gameObject : gameObjects) {
@@ -307,12 +416,27 @@ void Engine::update() {
 	  
      }
 
-	//add new objects after the loop
- // Add new objects after the loop
+    // Add new objects after the loop
 	for (auto& obj : toAdd) {
 		gameObjects.push_back(std::move(obj));
 	}
 	toAdd.clear(); // Clear the temporary vector
+
+	for (auto& gameObject : gameObjects) {
+		if (gameObject->getType() == "Player") {
+			auto body = gameObject->get<BodyComponent>();
+			int x = body->getX();
+			if (body) {
+
+				std::cout << x << std::endl;
+				if (x >= 1200.0f) {
+					destroyAllBodies();
+					loadLevel2();
+
+				}
+			}
+		}
+	}
 	
 }
 
@@ -376,7 +500,7 @@ void Engine::run() {
 		render();
 
 		
-
+	
 
 		//calculate frame duration
 		auto frameEndTime = clock::now(); //capture the end time after rendering the frame.
@@ -597,6 +721,8 @@ bool gameOver=false;
 	}
 	if (gameOver)
 	{
+
+destroyAllBodies();
 		isRunning = false; // Handle termination outside the loop
 	}
 
@@ -604,16 +730,28 @@ bool gameOver=false;
 
 void Engine::endGame(GameObject* gameObject)
 {
+
+  if(gameObject)
+  { 
 	auto body = gameObject->get<BodyComponent>();
 
 	if (body)
 	{
+      
 		body->getBody()->GetWorld()->DestroyBody(body->getBody());
 	}
 
-gameObject=nullptr;
+	for (int i = 0; i < gameObjects.size(); i++)
+	{
+		if (gameObjects[i]->getType() == "Player") {
+			gameObjects.erase(gameObjects.begin()+i);
+            break;
+		}
+    }
 
-SDL_Delay(1000);
+     SDL_Delay(1000);
+
+  }
 
 
 }

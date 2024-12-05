@@ -46,6 +46,14 @@ class Engine {
 
 	  int loadLevel();
 
+      int loadLevel2();
+
+      //delete level 1 game objects
+      void deleteGameObjects();
+
+     //delete level 1 Box2d bodies
+	  void destroyAllBodies();
+
 	  // Initialize the Engine 
 	  bool init(const char* title, int width, int height);
 
