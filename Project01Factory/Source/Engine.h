@@ -83,16 +83,18 @@ class Engine {
 	
 //Create a Box2D body
 	  b2Body* CreateBox(b2World& world, float x, float y, float width, float height, bool isDynamic, float density, float friction, float linearDamping);
+	  b2Body* CreatePlayerBody(b2World& world, float x, float y, float width, float height, bool isDynamic, float density, float friction, float linearDamping);
 
 //Box2d world
 	  void physicsWorld();
+      void physicsWorldLevel2();
 
     void checkCollisions();
 
 	static const int SCREEN_WIDTH;
 	static const int SCREEN_HEIGHT;
 
-    void endGame(GameObject* gameObject);
+    //void endGame(GameObject* gameObject);
 	static std::vector<std::unique_ptr<GameObject>> toAdd;
 	  
 private:

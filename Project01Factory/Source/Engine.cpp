@@ -22,7 +22,7 @@ Engine::Engine() :world(b2Vec2(0.0f, 9.8f))
  
 {
 
-	
+	destroyAllBodies();
 	isRunning = false;
 	width = 0;
 	window = nullptr;
@@ -256,11 +256,8 @@ Engine::Engine() :world(b2Vec2(0.0f, 9.8f))
 
 int Engine::loadLevel2()
 {
-	// Initialize the engine
-	if (!init("SDL2 Game Engine", SCREEN_WIDTH, SCREEN_HEIGHT)) {
-		return -1;
-	}
-
+	
+	
 	// Load textures into the texture manager
 	tinyxml2::XMLDocument doc;
 	// Load the XML file directly from "Assets/Assets.xml"
@@ -309,6 +306,7 @@ int Engine::loadLevel2()
 	}
 	std::unique_ptr < GameObject > playerLevel2 = std::make_unique < GameObject >("PlayerLevel2");
 	std::unique_ptr < GameObject > backgroundLevel2 = std::make_unique < GameObject >("BackgroundLevel2");
+	std::unique_ptr < GameObject > evilPlantLevel2 = std::make_unique < GameObject >("EvilPlantLevel2");
 
 	// Get the root element
 	tinyxml2::XMLElement* root = doc.RootElement();
@@ -347,12 +345,12 @@ int Engine::loadLevel2()
 
          //loop for evil plant components
 
-		if (std::string(objectElem->Attribute("type")) == "BackgroundLevel2") {
+		if (std::string(objectElem->Attribute("type")) == "EvilPlantLevel2") {
 			for (const tinyxml2::XMLElement* componentElem = objectElem->FirstChildElement(); componentElem != nullptr; componentElem = componentElem->NextSiblingElement()) {
-				auto component = compoLibrary->createComponent(componentElem->Name(), *backgroundLevel2, componentElem);
+				auto component = compoLibrary->createComponent(componentElem->Name(), *evilPlantLevel2, componentElem);
 				if (component) {
 					std::cout << "Adding component from XML: " << componentElem->Name() << std::endl;
-					backgroundLevel2->add(std::move(component));
+					evilPlantLevel2->add(std::move(component));
 
 				}
 				else {
@@ -362,6 +360,8 @@ int Engine::loadLevel2()
 			}
 		}
 
+        
+
 	}
 
    
@@ -369,7 +369,9 @@ int Engine::loadLevel2()
 	//Add game objects to the engine
     addGameObject(std::move(backgroundLevel2));
 	addGameObject(std::move(playerLevel2));
+	addGameObject(std::move(evilPlantLevel2));
 	
+    physicsWorldLevel2();
     run();
 
 	
@@ -466,9 +468,11 @@ void Engine::update() {
 			int x = body->getX();
 			if (body) {
 
-				std::cout << x << std::endl;
+				
 				if (x >= 1300.0f) {
+                //start clean and load level 2
 					destroyAllBodies();
+                
 					loadLevel2();
 
 				}
@@ -490,7 +494,7 @@ void Engine::render() {
 	for (auto& gameObject : gameObjects) {
 		if (gameObject->getType() != "Background" ) {
 			gameObject->draw(); // Draw remaining items
-            //gameObject->drawDebugShape(); 
+            gameObject->drawDebugShape(); 
 		}
 	}
 
@@ -605,6 +609,52 @@ b2Body* Engine::CreateBox(b2World& world, float x, float y, float width, float h
 	return body;
 }
 
+b2Body* Engine::CreatePlayerBody(b2World& world, float x, float y, float width, float height, bool isDynamic, float density, float friction, float linearDamping) {
+	// Define the body
+	b2BodyDef bodyDef;
+	bodyDef.position.Set(x / SCALE, y / SCALE); // Converts pixels to meters
+	bodyDef.type = isDynamic ? b2_dynamicBody : b2_staticBody;
+	bodyDef.linearDamping = linearDamping;
+
+	b2Body* body = world.CreateBody(&bodyDef);
+	if (!body) {
+		std::cout << "Error: Could not create player body.\n";
+		return nullptr;
+	}
+
+	// Define the torso (rectangle)
+	b2PolygonShape torsoShape;
+	torsoShape.SetAsBox((width / 2.0f) / SCALE, (height / 2.5f) / SCALE, b2Vec2(0, -0.1f), 0.0f);
+
+	b2FixtureDef torsoFixtureDef;
+	torsoFixtureDef.shape = &torsoShape;
+	torsoFixtureDef.density = density;
+	torsoFixtureDef.friction = friction;
+	body->CreateFixture(&torsoFixtureDef);
+
+	// Debug torso
+	std::cout << "Torso created with dimensions: ("
+		<< (width / 2.0f) / SCALE << ", "
+		<< (height / 2.5f) / SCALE << ")\n";
+
+	// Define the head (circle)
+	b2CircleShape headShape;
+	headShape.m_radius = (width / 4.0f) / SCALE; // Adjust based on head size
+	headShape.m_p.Set(0, (height / 3.0f) / SCALE); // Position above the torso
+
+	b2FixtureDef headFixtureDef;
+	headFixtureDef.shape = &headShape;
+	headFixtureDef.density = density;
+	headFixtureDef.friction = friction;
+	body->CreateFixture(&headFixtureDef);
+
+	// Debug head
+	std::cout << "Head created with radius: " << headShape.m_radius
+		<< " and offset: " << headShape.m_p.y << "\n";
+
+	return body;
+}
+
 void Engine::physicsWorld()
 {
 
@@ -621,19 +671,13 @@ void Engine::physicsWorld()
 				
 
 				b2Body* dynamicPlayer = CreateBox(world, body->getX(), body->getY(), body->getWidth(), body->getHeight(), body->getisDynamic(), body->getDensity(), body->getFriction(), 2);
-
-				body->setBody(dynamicPlayer);
+				
+              body->setBody(dynamicPlayer);
                dynamicPlayer->SetBullet(true);
 
 				dynamicPlayer->GetUserData().pointer = reinterpret_cast<uintptr_t>(gameObject.get()); //address to game object
-			std::cout<<body->getX()<<std::endl;
-            std::cout<<body->getY()<<std::endl;
-            std::cout<<body->getWidth()<<std::endl;
-            std::cout<<body->getHeight()<<std::endl;
-            std::cout<<body->getisDynamic()<<std::endl;
-            std::cout<<body->getDensity()<<std::endl;
-            std::cout<<body->getFriction()<<std::endl;
-           
+				
+
 
 			}
 			else {
@@ -655,13 +699,7 @@ void Engine::physicsWorld()
 				evilMushroom->GetUserData().pointer = reinterpret_cast<uintptr_t>(gameObject.get());
 
 				std::cout <<"Mushroom" << std::endl;
-				std::cout << body->getX() << std::endl;
-				std::cout << body->getY() << std::endl;
-				std::cout << body->getWidth() << std::endl;
-				std::cout << body->getHeight() << std::endl;
-				std::cout << body->getisDynamic() << std::endl;
-				std::cout << body->getDensity() << std::endl;
-				std::cout << body->getFriction() << std::endl;
+				
 
 
 			}
@@ -685,15 +723,7 @@ void Engine::physicsWorld()
 			body->setBody(treeLog);
             //treeLog->GetUserData().pointer = reinterpret_cast<uintptr_t>(gameObject.get());
 			
-			//std::cout <<body->getWidth()<<std::endl;
-			std::cout << "Log" << std::endl;
-			std::cout << body->getX() << std::endl;
-			std::cout << body->getY() << std::endl;
-			std::cout << body->getWidth() << std::endl;
-			std::cout << body->getHeight() << std::endl;
-			std::cout << body->getisDynamic() << std::endl;
-			std::cout << body->getDensity() << std::endl;
-			std::cout << body->getFriction() << std::endl;
+			
 		  }
 
 		  else {
@@ -702,6 +732,63 @@ void Engine::physicsWorld()
 		continue;
 	   }
     }
+
+}
+
+void Engine::physicsWorldLevel2()
+{
+
+	//create box2d world
+	//std::string groundTag = "GroundLevel2";
+	//b2Body* ground = CreateBox(world, 0.0f, 480.0f, 3500.0f, 10.0f, false, 0.0f, 0.3f, 2.0f);
+	//ground->GetUserData().pointer = reinterpret_cast<uintptr_t>(&groundTag);
+
+	for (auto& gameObject : gameObjects)
+	{
+		if (gameObject->getType() == "PlayerLevel2") {
+			auto body = gameObject->get<BodyComponent>();
+			if (body) {
+
+
+				b2Body* dynamicPlayerLevel2 = CreateBox(world, body->getX(), body->getY(), body->getWidth(), body->getHeight(), body->getisDynamic(), body->getDensity(), body->getFriction(), 2);
+
+				body->setBody(dynamicPlayerLevel2);
+				dynamicPlayerLevel2->SetBullet(true);
+
+				dynamicPlayerLevel2->GetUserData().pointer = reinterpret_cast<uintptr_t>(gameObject.get()); //address to game object
+				
+
+
+			}
+			else {
+				std::cout << "Null body." << std::endl;
+			}
+			continue;
+
+        }
+		if (gameObject->getType() == "EvilPlantLevel2") {
+			auto body = gameObject->get<BodyComponent>();
+			if (body) {
+
+
+				b2Body* staticPlantLevel2 = CreateBox(world, body->getX(), body->getY(), body->getWidth(), body->getHeight(), body->getisDynamic(), body->getDensity(), body->getFriction(), 2);
+
+				body->setBody(staticPlantLevel2);
+				
+				staticPlantLevel2->GetUserData().pointer = reinterpret_cast<uintptr_t>(gameObject.get()); //address to game object
+
+
+
+			}
+			else {
+				std::cout << "Null body." << std::endl;
+			}
+			continue;
+
+		}
+}
+
+
 
 }
 
@@ -718,14 +805,14 @@ bool gameOver=false;
 			auto* objB = reinterpret_cast<GameObject*>(contact->GetFixtureB()->GetBody()->GetUserData().pointer);
 
 			if (objA && objB) {  //ensure objects are not null
-				if ((objA->getType() == "evilMushroom" && objB->getType() == "Player") ||
-					(objA->getType() == "Player" && objB->getType() == "evilMushroom")){
+				if ((objA->getType() == "Player" && (objB->getType() == "evilMushroom" )) ||
+					(objB->getType() == "Player" && (objA->getType() == "evilMushroom" ))) {
 
                   
 
-                   std::cout<<"Collision detected between Player and evilMushroom!"<<std::endl;
-				 
-                   //determine which object is the player and call its takeDamage method
+                  
+                   //determine which object is the player and call its collision counter method
+                   //call function handle collision to create a customized reaction to each enemy
 				   if (objA->getType() == "Player") {
 					   auto Damage= objA->get<DamageComponent>();
 					   if (Damage) {
@@ -733,7 +820,7 @@ bool gameOver=false;
 					  }
 					   if (Damage && Damage->getIsAlive()==false ) {
 						 
-						   endGame(objA); //Call to end the game
+						   //endGame(objA); //Call to end the game
 						   gameOver = true;
 						   break;  //exit the loop early
                            
@@ -746,53 +833,86 @@ bool gameOver=false;
 					   }
 					   if (Damage && Damage->getIsAlive()==false) {
 						
-						   endGame(objB); //Call to end the game
+						   //endGame(objB); //Call to end the game
                            gameOver= true;
                            break;  //exit the loop early
 					   }
 				   }
 
                 }
-		   }
+                if ((objA->getType() == "PlayerLevel2" && objB->getType() == "EvilPlantLevel2") ||
+					(objB->getType() == "PlayerLevel2" && objA->getType() == "EvilPlantLevel2")){
+					//determine which object is the player and call its collision counter method
+				  //call function handle collision to create a customized reaction to each enemy
+					if (objA->getType() == "PlayerLevel2") {
+						auto Damage = objA->get<DamageComponent>();
+						if (Damage) {
+							Damage->collisionCounter();
+						}
+						if (Damage && Damage->getIsAlive() == false) {
+
+							//endGame(objA); //Call to end the game
+							gameOver = true;
+							break;  //exit the loop early
+
+						}
+					}
+					if (objB->getType() == "PlayerLevel2") {
+						auto Damage = objB->get<DamageComponent>();
+						if (Damage) {
+							Damage->collisionCounter();
+						}
+						if (Damage && Damage->getIsAlive() == false) {
+
+							//endGame(objB); //Call to end the game
+							gameOver = true;
+							break;  //exit the loop early
+						}
+					}
+
+		        }
 			
 		}
 	}
+}
 	if (gameOver)
 	{
 
-destroyAllBodies();
+        destroyAllBodies();
 		isRunning = false; // Handle termination outside the loop
 	}
 
-}
-
-void Engine::endGame(GameObject* gameObject)
-{
-
-  if(gameObject)
-  { 
-	auto body = gameObject->get<BodyComponent>();
-
-	if (body)
-	{
-      auto b2Body= body->getBody();
-      if(b2Body){
-		b2Body->GetWorld()->DestroyBody(body->getBody());
-      }
-	}
-
-	for (int i = 0; i < gameObjects.size(); i++)
-	{
-		if (gameObjects[i]->getType() == "Player") {
-			gameObjects.erase(gameObjects.begin()+i);
-            break;
-		}
-    }
-
-     SDL_Delay(1000);
-
-  }
 
 
 }
+
+//void Engine::endGame(GameObject* gameObject)
+//{
+//
+//  if(gameObject)
+//  { 
+//	auto body = gameObject->get<BodyComponent>();
+//
+//	if (body)
+//	{
+//      auto b2Body= body->getBody();
+//      if(b2Body){
+//		b2Body->GetWorld()->DestroyBody(body->getBody());
+//      }
+//	}
+//	
+//
+//	for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it) {
+//		if ((*it)->getType() == "Player" ) {
+//			it = gameObjects.erase(it); // Safe erase with iterator
+//			break; // Stop after erasing the first match
+//		}
+//	}
+//
+//    
+//
+//  }
+
+
+//}
 

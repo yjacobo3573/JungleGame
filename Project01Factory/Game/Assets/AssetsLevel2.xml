@@ -9,9 +9,11 @@
 	<Asset type="PlayerLevel2">
 		<textFile file="Run (7).png" />
 	</Asset>
-	
-	
-	
+
+
+	<Asset type="EvilPlantLevel2">
+		<textFile file="evilPlant.png" />
+	</Asset>
 	
 	
 	

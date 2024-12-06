@@ -16,10 +16,14 @@
 		<JumpComponent />
 		<CameraFollowerComponent />
 		<DamageComponent collisions="0" isAlive="true" />
-	</Object>	
-	
-	
-	
+	</Object>
+
+
+	<Object type="EvilPlantLevel2">
+		<BodyComponent x="580.0f" y="410.0f" width="250.0f" height="200.0f" velocityX="0.0f"
+			  velocityY="0.0f" angle="0.0f" density="1.0f" friction="0.3f" isDynamic="false" linearDamping="3.0f"/>
+		<SpriteComponent textureKey="EvilPlantLevel2" />
+	</Object>
 	
 	
 	
