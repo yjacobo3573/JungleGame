@@ -7,7 +7,7 @@ void AIComponentPatroling::draw()
 void AIComponentPatroling::update()
 {
 
-float playerX;
+float playerX=0;
 
 for (auto& gameObjs : Engine::gameObjects) {
 
@@ -21,8 +21,9 @@ for (auto& gameObjs : Engine::gameObjects) {
      }
 }
 
-   float enemyX;
-   float enemyVelocityX;
+
+   float enemyX=0;
+   float enemyVelocityX=0;
 
    auto bodyEnemy= parent().get<BodyComponent>();
 
@@ -32,26 +33,42 @@ for (auto& gameObjs : Engine::gameObjects) {
     }
 
 
-  int distance;
+  int distance=0;
 
 
   distance= enemyX-playerX;
 
 
 
-if (distance >= 621)
+if (distance <= 621)
 {
     
-    if (bodyEnemy)
-    {
-        auto enemyB2Body= bodyEnemy->getBody();
-        if (enemyB2Body)
-        {
-            enemyB2Body->SetLinearVelocity(b2Vec2(-enemyVelocityX, 0.0f));
+    static bool movingLeft = true; // Tracks the current direction
+
+    const float leftBoundary = 750.0f;  // Minimum X position
+    const float rightBoundary = 1200.0f; // Maximum X position
+    const float patrolSpeed = 2.0f;     // Speed of movement
+
+    if (bodyEnemy) {
+        auto enemyB2Body = bodyEnemy->getBody();
+        if (enemyB2Body) {
+            // Determine direction and set velocity
+            float velocityX = movingLeft ? -patrolSpeed : patrolSpeed;
+            enemyB2Body->SetLinearVelocity(b2Vec2(velocityX, 0.0f));
+
+            // Reverse direction at boundaries
+            if (enemyX <= leftBoundary) {
+                movingLeft = false; // Switch to moving right
+            }
+            else if (enemyX >= rightBoundary) {
+                movingLeft = true; // Switch to moving left
+            }
         }
     }
 
 }
+
+
 
 
 

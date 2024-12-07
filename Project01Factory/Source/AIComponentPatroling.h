@@ -5,7 +5,7 @@
 #include "Engine.h"
 class AIComponentPatroling: public Component
 {
-
+public:
 	AIComponentPatroling(GameObject& owner) : Component(owner) {}
 
 	void draw() override;

@@ -78,6 +78,12 @@ Engine::Engine() :world(b2Vec2(0.0f, 9.8f))
 				return ComponentFactory::createspawnComponent(owner, element);
 		});
 
+	compoLibrary->registerComponent("AIComponentPatroling",
+		[](GameObject& owner,
+			const tinyxml2::XMLElement* element) {
+				return ComponentFactory::createAIComponentPatroling(owner, element);
+		});
+
 
 }
 
@@ -743,11 +749,16 @@ void Engine::physicsWorld()
 				
 
 				b2Body* evilMushroom = CreateBox(world, body->getX(), body->getY(), body->getWidth(), body->getHeight(), body->getisDynamic(), body->getDensity(), body->getFriction(), 2);
-
+               std::cout<<body->getY()<<std::endl;
 				body->setBody(evilMushroom);
+				evilMushroom->SetType(b2_kinematicBody);
+
 				evilMushroom->GetUserData().pointer = reinterpret_cast<uintptr_t>(gameObject.get());
 
-				std::cout <<"Mushroom" << std::endl;
+				
+
+				// Debugging output
+				std::cout << "Mushroom created at: (" << evilMushroom->GetPosition().x << ", " << evilMushroom->GetPosition().y << ")" << std::endl;
 				
 
 

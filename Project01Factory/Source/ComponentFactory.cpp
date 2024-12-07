@@ -110,6 +110,11 @@ std::unique_ptr<Component> ComponentFactory::createspawnComponent(GameObject& ow
 	return std::make_unique<spawnComponent>(owner);
 }
 
+std::unique_ptr<Component> ComponentFactory::createAIComponentPatroling(GameObject& owner, const tinyxml2::XMLElement* objectElement)
+{
+	return std::make_unique<AIComponentPatroling>(owner);
+}
+
 void ComponentFactory::registerComponent(const std::string& componentType, std::function<std::unique_ptr<Component>(GameObject& ,const tinyxml2::XMLElement*)> creator)
 {
 

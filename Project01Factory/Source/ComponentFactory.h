@@ -15,6 +15,7 @@
 #include "DamageComponent.h"
 #include "GameObject.h"
 #include "spawnComponent.h"
+#include "AIComponentPatroling.h"
 
 class ComponentFactory
 {
@@ -40,6 +41,7 @@ static std::unique_ptr<Component> createCameraFollowerComponent(GameObject& owne
 static std::unique_ptr<Component> createDamageComponent(GameObject& owner, const tinyxml2::XMLElement* objectElement); 
 
 static std::unique_ptr<Component> createspawnComponent(GameObject& owner, const tinyxml2::XMLElement* objectElement); 
+static std::unique_ptr<Component> createAIComponentPatroling(GameObject& owner, const tinyxml2::XMLElement* objectElement); 
 
  
 
