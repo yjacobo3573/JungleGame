@@ -33,7 +33,7 @@ public:
   void draw() override;
 
   void drawDebugShape() override;
- 
+  
 
 private:
 	SDL_Texture* texture;

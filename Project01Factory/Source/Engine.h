@@ -88,7 +88,7 @@ class Engine {
 	
 //Create a Box2D body
 	  b2Body* CreateBox(b2World& world, float x, float y, float width, float height, bool isDynamic, float density, float friction, float linearDamping);
-	  b2Body* CreatePlayerBody(b2World& world, float x, float y, float width, float height, bool isDynamic, float density, float friction, float linearDamping);
+	  b2Body* CreatePlayerBody(b2World& world, float x, float y, float width, float height, bool isDynamic, float density, float friction, float linearDamping, bool includeHead);
 
 //Box2d world
 	  void physicsWorld();

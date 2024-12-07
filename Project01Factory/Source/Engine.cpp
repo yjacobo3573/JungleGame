@@ -645,6 +645,11 @@ b2Body* Engine::CreateBox(b2World& world, float x, float y, float width, float h
 
 	b2Body* body = world.CreateBody(&bodyDef);
 
+
+	//float adjustedWidth = width * 0.6f;
+	//// Debug output
+	//std::cout << "Original Width: " << width << ", Adjusted Width: " << adjustedWidth << std::endl;
+
 	//Define the shape
 	b2PolygonShape boxShape;
 	boxShape.SetAsBox((width / 2.0f)/SCALE, (height/2.0f)/SCALE);
@@ -664,48 +669,59 @@ b2Body* Engine::CreateBox(b2World& world, float x, float y, float width, float h
 	return body;
 }
 
-b2Body* Engine::CreatePlayerBody(b2World& world, float x, float y, float width, float height, bool isDynamic, float density, float friction, float linearDamping) {
+b2Body* Engine::CreatePlayerBody(b2World& world, float x, float y, float width, float height, bool isDynamic, float density, float friction, float linearDamping, bool includeHead) {
+	// Null check for the world
+	if (&world == nullptr) {
+		std::cerr << "Error: Invalid b2World reference passed to CreateBody." << std::endl;
+		return nullptr;
+	}
+
 	// Define the body
 	b2BodyDef bodyDef;
-	bodyDef.position.Set(x / SCALE, y / SCALE); // Converts pixels to meters
+	bodyDef.position.Set(x / SCALE, y / SCALE); // Keep y-axis as is
 	bodyDef.type = isDynamic ? b2_dynamicBody : b2_staticBody;
 	bodyDef.linearDamping = linearDamping;
 
+	// Create the body
 	b2Body* body = world.CreateBody(&bodyDef);
 	if (!body) {
-		std::cout << "Error: Could not create player body.\n";
+		std::cerr << "Error: Failed to create b2Body." << std::endl;
 		return nullptr;
 	}
 
 	// Define the torso (rectangle)
 	b2PolygonShape torsoShape;
-	torsoShape.SetAsBox((width / 2.0f) / SCALE, (height / 2.5f) / SCALE, b2Vec2(0, -0.1f), 0.0f);
+	torsoShape.SetAsBox((width / 2.0f) / SCALE, (height / 2.5f) / SCALE,
+		b2Vec2(0, -height / 4.0f / SCALE), 0.0f); // Adjust offset for torso
 
 	b2FixtureDef torsoFixtureDef;
 	torsoFixtureDef.shape = &torsoShape;
 	torsoFixtureDef.density = density;
 	torsoFixtureDef.friction = friction;
-	body->CreateFixture(&torsoFixtureDef);
 
-	// Debug torso
-	std::cout << "Torso created with dimensions: ("
-		<< (width / 2.0f) / SCALE << ", "
-		<< (height / 2.5f) / SCALE << ")\n";
+	b2Fixture* torsoFixture = body->CreateFixture(&torsoFixtureDef);
+	if (!torsoFixture) {
+		std::cerr << "Error: Failed to create torso fixture." << std::endl;
+		return nullptr; // Cleanup may be necessary
+	}
 
-	// Define the head (circle)
-	b2CircleShape headShape;
-	headShape.m_radius = (width / 4.0f) / SCALE; // Adjust based on head size
-	headShape.m_p.Set(0, (height / 3.0f) / SCALE); // Position above the torso
+	// Optionally include the head (circle)
+	if (includeHead) {
+		b2CircleShape headShape;
+		headShape.m_radius = (width / 4.0f) / SCALE; // Adjust based on head size
+		headShape.m_p.Set(0, height / 2.5f / SCALE); // Position above the torso
 
-	b2FixtureDef headFixtureDef;
-	headFixtureDef.shape = &headShape;
-	headFixtureDef.density = density;
-	headFixtureDef.friction = friction;
-	body->CreateFixture(&headFixtureDef);
+		b2FixtureDef headFixtureDef;
+		headFixtureDef.shape = &headShape;
+		headFixtureDef.density = density;
+		headFixtureDef.friction = friction;
 
-	// Debug head
-	std::cout << "Head created with radius: " << headShape.m_radius
-		<< " and offset: " << headShape.m_p.y << "\n";
+		b2Fixture* headFixture = body->CreateFixture(&headFixtureDef);
+		if (!headFixture) {
+			std::cerr << "Error: Failed to create head fixture." << std::endl;
+			return nullptr; // Cleanup may be necessary
+		}
+	}
 
 	return body;
 }
@@ -726,7 +742,9 @@ void Engine::physicsWorld()
 				
 
 				b2Body* dynamicPlayer = CreateBox(world, body->getX(), body->getY(), body->getWidth(), body->getHeight(), body->getisDynamic(), body->getDensity(), body->getFriction(), 2);
-				
+				if (!dynamicPlayer) {
+					std::cerr << "Failed to create player body!" << std::endl;
+				}
               body->setBody(dynamicPlayer);
                dynamicPlayer->SetBullet(true);
 
