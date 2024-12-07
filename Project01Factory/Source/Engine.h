@@ -17,6 +17,7 @@
 #include "View.h"
 
 #include <Box2D/Box2D.h>
+#include <SDL2/SDL_mixer.h>
 
 #include "Component.h"
 
@@ -47,6 +48,10 @@ class Engine {
 	  int loadLevel();
 
       int loadLevel2();
+
+      static void thumpSound();
+
+      
 
       //delete level 1 game objects
       void deleteGameObjects();
@@ -91,6 +96,9 @@ class Engine {
 
     void checkCollisions();
 
+    void handleCollisions(GameObject* player, GameObject* enemy);
+
+//screen dimensions
 	static const int SCREEN_WIDTH;
 	static const int SCREEN_HEIGHT;
 
@@ -107,7 +115,7 @@ private:
        
 	   b2World world;
       
-    
+	 static Mix_Chunk* soundEffect;
 	 
        
 };

@@ -14,7 +14,7 @@ const float Engine::SCALE = 100.0f;
 
 const int Engine::SCREEN_HEIGHT=752;
 const int Engine::SCREEN_WIDTH=1500;
-
+Mix_Chunk* Engine::soundEffect = nullptr; 
 std::vector<std::unique_ptr<GameObject>> Engine::toAdd;
 std::vector<std::unique_ptr<GameObject>> Engine::gameObjects;
 
@@ -76,6 +76,8 @@ Engine::Engine() :world(b2Vec2(0.0f, 9.8f))
 			const tinyxml2::XMLElement* element) {
 				return ComponentFactory::createspawnComponent(owner, element);
 		});
+
+
 }
 
    int Engine::loadLevel() {
@@ -377,6 +379,8 @@ int Engine::loadLevel2()
 	
 }
 
+
+
 void Engine::deleteGameObjects()
 {
 
@@ -410,6 +414,16 @@ bool Engine::init(const char* title, int width, int height) {
 		return false;
 	}
 
+	if (SDL_Init(SDL_INIT_AUDIO) < 0) {
+		std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
+		exit(1);
+	}
+
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 4, 2048) < 0) {
+		std::cerr << "Failed to initialize SDL_mixer: " << Mix_GetError() << std::endl;
+		exit(1);
+	}
+
 	window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
 	if (!window) {
 		SDL_Log("Failed to create window: %s", SDL_GetError());
@@ -427,8 +441,28 @@ bool Engine::init(const char* title, int width, int height) {
 		return false;
 	}
 
+   soundEffect = Mix_LoadWAV("Assets/ThumpSound.wav");
+	
+	if (!soundEffect) {
+		std::cerr << "Failed to load sound effect: " << Mix_GetError() << std::endl;
+	}
+
+	soundEffect = Mix_LoadWAV("Assets/grassFootsteps.wav");
+
+	if (!soundEffect) {
+		std::cerr << "Failed to load sound effect: " << Mix_GetError() << std::endl;
+	}
+
+	
 	isRunning = true;
 	return true;
+}
+
+void Engine::thumpSound() {
+	Mix_VolumeChunk(soundEffect,MIX_MAX_VOLUME/2);
+	if (Mix_PlayChannel(-1, soundEffect, 0) == -1) {
+		std::cerr << "Failed to play sound effect: " << Mix_GetError() << std::endl;
+	}
 }
 
 void Engine::handleEvents() {
@@ -814,6 +848,7 @@ bool gameOver=false;
                    //determine which object is the player and call its collision counter method
                    //call function handle collision to create a customized reaction to each enemy
 				   if (objA->getType() == "Player") {
+					   handleCollisions(objA, objB);
 					   auto Damage= objA->get<DamageComponent>();
 					   if (Damage) {
 						   Damage->collisionCounter();
@@ -827,6 +862,7 @@ bool gameOver=false;
 					   }
 				   }
 				   if (objB->getType() == "Player") {
+					   handleCollisions(objB, objA);
 					   auto Damage = objB->get<DamageComponent>();
 					   if (Damage) {
 						   Damage->collisionCounter();
@@ -884,6 +920,20 @@ bool gameOver=false;
 
 
 
+}
+
+void Engine::handleCollisions(GameObject* player, GameObject* enemy)
+{
+
+	if (enemy) { //if not null
+		if (enemy->getType() == "evilMushroom") {
+			thumpSound();
+		}
+
+
+
+
+   }
 }
 
 //void Engine::endGame(GameObject* gameObject)
