@@ -25,6 +25,7 @@
     <Xml Include="Assets\ObjectLevel2.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\AIComponentPatroling.cpp" />
     <ClCompile Include="Source\CameraFollowerComponent.cpp" />
     <ClCompile Include="Source\DamageComponent.cpp" />
     <ClCompile Include="Source\JumpComponent.cpp" />
@@ -43,6 +44,7 @@
     <ClCompile Include="Source\View.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\AIComponentPatroling.h" />
     <ClInclude Include="Source\CameraFollowerComponent.h" />
     <ClInclude Include="Source\DamageComponent.h" />
     <ClInclude Include="Source\JumpComponent.h" />

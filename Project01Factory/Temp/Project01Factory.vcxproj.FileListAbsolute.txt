@@ -2,10 +2,10 @@ C:\Users\yjaco\source\repos\Project01Factory\Project01Factory\Game\SDL2d.dll
 C:\Users\yjaco\source\repos\Project01Factory\Project01Factory\Game\SDL2_imaged.dll
 C:\Users\yjaco\source\repos\Project01Factory\Project01Factory\Game\libpng16d.dll
 C:\Users\yjaco\source\repos\Project01Factory\Project01Factory\Game\zlibd1.dll
-C:\Users\yjaco\source\repos\Project01Factory\Project01Factory\Game\tinyxml2.dll
-C:\Users\yjaco\source\repos\Project01Factory\Project01Factory\Temp\Project0.4E10D0D1.Up2Date
 C:\Users\yjaco\source\repos\Project01Factory\Project01Factory\Game\SDL2_mixerd.dll
 C:\Users\yjaco\source\repos\Project01Factory\Project01Factory\Game\vorbisfile.dll
 C:\Users\yjaco\source\repos\Project01Factory\Project01Factory\Game\vorbis.dll
 C:\Users\yjaco\source\repos\Project01Factory\Project01Factory\Game\ogg.dll
 C:\Users\yjaco\source\repos\Project01Factory\Project01Factory\Game\wavpackdll.dll
+C:\Users\yjaco\source\repos\Project01Factory\Project01Factory\Game\tinyxml2.dll
+C:\Users\yjaco\source\repos\Project01Factory\Project01Factory\Temp\Project0.4E10D0D1.Up2Date

@@ -13,7 +13,7 @@ if (Input::isKeyDown(SDLK_RIGHT))
 
    if(body){
 
-
+       Engine::stepsSound();
     auto velocityX= body->getVelocityX();
 
 	body->getBody()->SetLinearVelocity(b2Vec2(velocityX, 0.0f));
@@ -22,7 +22,7 @@ if (Input::isKeyDown(SDLK_RIGHT))
     
     body->getBody()->SetLinearDamping(linearDamping);
 
-   Engine::stepsSound();
+   
    }
 
  //body->setX(body->getX() + Velocityx);

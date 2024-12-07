@@ -23,6 +23,7 @@
     <ClCompile Include="Source\CameraFollowerComponent.cpp" />
     <ClCompile Include="Source\DamageComponent.cpp" />
     <ClCompile Include="Source\spawnComponent.cpp" />
+    <ClCompile Include="Source\AIComponentPatroling.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Engine.h" />
@@ -40,5 +41,6 @@
     <ClInclude Include="Source\CameraFollowerComponent.h" />
     <ClInclude Include="Source\DamageComponent.h" />
     <ClInclude Include="Source\spawnComponent.h" />
+    <ClInclude Include="Source\AIComponentPatroling.h" />
   </ItemGroup>
 </Project>

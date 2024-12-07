@@ -104,15 +104,15 @@ class Engine {
 
     //void endGame(GameObject* gameObject);
 	static std::vector<std::unique_ptr<GameObject>> toAdd;
-	  
+
+	static std::vector < std::unique_ptr < GameObject >> gameObjects; // Track game objects
+
 private:
        bool isRunning; // Engine running state 
 
 	   SDL_Window* window; // SDL window 
 	   static SDL_Renderer* renderer; // SDL renderer (static)
      
-	  static std::vector < std::unique_ptr < GameObject >> gameObjects; // Track game objects
-       
 	   b2World world;
       
 	 static Mix_Chunk* thumpSoundEffect;

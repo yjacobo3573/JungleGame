@@ -459,18 +459,22 @@ bool Engine::init(const char* title, int width, int height) {
 	return true;
 }
 
+
+
 void Engine::thumpSound() {
 	Mix_VolumeChunk(thumpSoundEffect,MIX_MAX_VOLUME/2);
-	if (Mix_PlayChannel(-1, thumpSoundEffect, 0) == -1) {
-		std::cerr << "Failed to play sound effect: " << Mix_GetError() << std::endl;
+	int channel = Mix_PlayChannel(2, thumpSoundEffect, 0); // Use channel 2 for collisions
+	if (channel == -1) {
+		std::cerr << "Failed to play collision sound: " << Mix_GetError() << std::endl;
 	}
 }
 
 void Engine::stepsSound()
 {
-	Mix_VolumeChunk(footStepsSound, MIX_MAX_VOLUME / 2);
-	if (Mix_PlayChannel(-1, footStepsSound, 0) == -1) {
-		std::cerr << "Failed to play sound effect: " << Mix_GetError() << std::endl;
+	Mix_VolumeChunk(footStepsSound, MIX_MAX_VOLUME / 5);
+	int channel = Mix_PlayChannel(1, footStepsSound, 0); // Use channel 1 for footsteps
+	if (channel == -1) {
+		std::cerr << "Failed to play footsteps sound: " << Mix_GetError() << std::endl;
 	}
 
 }
@@ -510,6 +514,7 @@ void Engine::update() {
 		if (gameObject->getType() == "Player") {
 			auto body = gameObject->get<BodyComponent>();
 			int x = body->getX();
+std::cout<<x<<std::endl;
 			if (body) {
 
 				
@@ -890,7 +895,9 @@ bool gameOver=false;
 					(objB->getType() == "PlayerLevel2" && objA->getType() == "EvilPlantLevel2")){
 					//determine which object is the player and call its collision counter method
 				  //call function handle collision to create a customized reaction to each enemy
-					if (objA->getType() == "PlayerLevel2") {
+					
+                  if (objA->getType() == "PlayerLevel2") {
+					  handleCollisions(objA, objB);
 						auto Damage = objA->get<DamageComponent>();
 						if (Damage) {
 							Damage->collisionCounter();
@@ -904,6 +911,7 @@ bool gameOver=false;
 						}
 					}
 					if (objB->getType() == "PlayerLevel2") {
+						handleCollisions(objB, objA);
 						auto Damage = objB->get<DamageComponent>();
 						if (Damage) {
 							Damage->collisionCounter();
@@ -939,7 +947,9 @@ void Engine::handleCollisions(GameObject* player, GameObject* enemy)
 		if (enemy->getType() == "evilMushroom") {
 			thumpSound();
 		}
-
+		if (enemy->getType() == "EvilPlantLevel2") {
+			thumpSound();
+		}
 
 
 
