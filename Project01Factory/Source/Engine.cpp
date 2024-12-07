@@ -14,7 +14,8 @@ const float Engine::SCALE = 100.0f;
 
 const int Engine::SCREEN_HEIGHT=752;
 const int Engine::SCREEN_WIDTH=1500;
-Mix_Chunk* Engine::soundEffect = nullptr; 
+Mix_Chunk* Engine::thumpSoundEffect = nullptr; 
+Mix_Chunk* Engine::footStepsSound = nullptr; 
 std::vector<std::unique_ptr<GameObject>> Engine::toAdd;
 std::vector<std::unique_ptr<GameObject>> Engine::gameObjects;
 
@@ -441,15 +442,15 @@ bool Engine::init(const char* title, int width, int height) {
 		return false;
 	}
 
-   soundEffect = Mix_LoadWAV("Assets/ThumpSound.wav");
+   thumpSoundEffect = Mix_LoadWAV("Assets/ThumpSound.wav");
 	
-	if (!soundEffect) {
+	if (!thumpSoundEffect) {
 		std::cerr << "Failed to load sound effect: " << Mix_GetError() << std::endl;
 	}
 
-	soundEffect = Mix_LoadWAV("Assets/grassFootsteps.wav");
+	footStepsSound = Mix_LoadWAV("Assets/walkingSound.wav");
 
-	if (!soundEffect) {
+	if (!footStepsSound) {
 		std::cerr << "Failed to load sound effect: " << Mix_GetError() << std::endl;
 	}
 
@@ -459,10 +460,19 @@ bool Engine::init(const char* title, int width, int height) {
 }
 
 void Engine::thumpSound() {
-	Mix_VolumeChunk(soundEffect,MIX_MAX_VOLUME/2);
-	if (Mix_PlayChannel(-1, soundEffect, 0) == -1) {
+	Mix_VolumeChunk(thumpSoundEffect,MIX_MAX_VOLUME/2);
+	if (Mix_PlayChannel(-1, thumpSoundEffect, 0) == -1) {
 		std::cerr << "Failed to play sound effect: " << Mix_GetError() << std::endl;
 	}
+}
+
+void Engine::stepsSound()
+{
+	Mix_VolumeChunk(footStepsSound, MIX_MAX_VOLUME / 2);
+	if (Mix_PlayChannel(-1, footStepsSound, 0) == -1) {
+		std::cerr << "Failed to play sound effect: " << Mix_GetError() << std::endl;
+	}
+
 }
 
 void Engine::handleEvents() {

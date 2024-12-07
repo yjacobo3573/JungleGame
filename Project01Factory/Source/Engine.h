@@ -51,7 +51,7 @@ class Engine {
 
       static void thumpSound();
 
-      
+      static void stepsSound();
 
       //delete level 1 game objects
       void deleteGameObjects();
@@ -115,7 +115,8 @@ private:
        
 	   b2World world;
       
-	 static Mix_Chunk* soundEffect;
+	 static Mix_Chunk* thumpSoundEffect;
+     static Mix_Chunk* footStepsSound;
 	 
        
 };

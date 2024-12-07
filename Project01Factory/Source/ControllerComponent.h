@@ -2,6 +2,7 @@
 #define   CONTROLLERCOMPONENT_H
 #include "Component.h"
 #include "Input.h"
+#include "Engine.h"
 
 class ControllerComponent: public Component
 {

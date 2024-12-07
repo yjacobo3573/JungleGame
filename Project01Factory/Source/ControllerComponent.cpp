@@ -21,6 +21,8 @@ if (Input::isKeyDown(SDLK_RIGHT))
     auto linearDamping= body->getLinearDamping();
     
     body->getBody()->SetLinearDamping(linearDamping);
+
+   Engine::stepsSound();
    }
 
  //body->setX(body->getX() + Velocityx);
