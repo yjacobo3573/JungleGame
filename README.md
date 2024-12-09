@@ -24,4 +24,4 @@
        Below is a video showing full functionality
 [screen-capture (57).webm](https://github.com/user-attachments/assets/25320b16-a552-49c0-a0b0-4c7e73e2a469)
 
-       For Assignment 5 I simply added an AI Patroling component to the enemies, so that they could detect when the player is close and start automatically moving around sort of patroling an area.
+       For Assignment 5 I simply added an AI Patroling component to the enemies, so that they could detect when the player is close and start automatically moving around sort of patroling an area. This component works well regardless of the level I'm in and it simplifies the logic of things by calculating the distance between the player's x coordinate and the enemies y coordinate and deciding whether the distance is enough to start moving the enemy bodies.
